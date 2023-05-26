@@ -82,13 +82,6 @@ cd ../finish
 mvn package
 ```
 
-Run the following command to download or update to the latest Open Liberty Docker image:
-
-[role='command']
-```
-docker pull icr.io/appcafe/open-liberty:full-java11-openj9-ubi
-```
-
 Build the `inventory` Docker image with the following command:
 
 [role='command']
@@ -132,7 +125,7 @@ Run the following command to start the PostgreSQL database, which runs the `post
 
 [role='command']
 ```
-docker run --name postgres-container -p 5432:5432 -d postgres-sample
+docker run --name postgres-container --rm -p 5432:5432 -d postgres-sample
 ```
 
 The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting development mode with container support, known as dev mode. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
@@ -155,7 +148,7 @@ Build and run the container by running the `devc` goal with the PostgreSQL conta
 
 [role='command']
 ```
-mvn liberty:devc -DdockerRunOpts="-e POSTGRES_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
+mvn liberty:devc -DdockerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
 
 You need to wait a while to let dev mode start. After you see the following message, your application server in dev mode is ready:
@@ -232,7 +225,7 @@ include::staging/src/test/java/it/io/openliberty/guides/inventory/SystemResource
 
 The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface, and configures a hostname verifier if the tests run over HTTPS.
 
-The [hotspot=setup file=0]`setup` method determines the protocol to use (HTTP or HTTPS) and builds the base URL path for the REST client. 
+The [hotspot=setup file=0]`setup()` method determines the protocol to use (HTTP or HTTPS) and builds the base URL path for the REST client. 
 
 The [hotspot=testAddSystem file=0]`testAddSystem()` verifies the [hotspot=addSystem file=0]`addSystem` and [hotspot=listContents file=0]`listContents` endpoints.
 
@@ -330,15 +323,15 @@ LibertyContainer.java
 include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContainer.java[]
 ----
 
-Define the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL Docker image, and define the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` Docker image. Because containers are isolated by default, make sure both containers use the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` for them to communicate.
+Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` Docker image. Because containers are isolated by default, make sure both containers use the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` for them to communicate.
 
 The [hotspot=waitingFor file=0]`waitingFor()` method overrides the [hotspot=waitingFor file=1]`waitingFor()` method in [hotspot file=1]`LibertyContainer`, ensuring the `inventoryContainer` is ready before tests run by checking the [hotspot=waitingFor file=0]`/health/ready` health readiness check API. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
 
 The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
-The updated [hotspot=setup file=0]`setup` method prepares the test environment. It checks if the tests are running in dev mode or local runtime, or via Testcontainers, using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures the Postgres database is running locally. In the case of Testcontainers, it starts Postgres and `inventory` containers.
+The updated [hotspot=setup file=0]`setup()` method prepares the test environment. It checks if the tests are running in dev mode or local runtime, or via Testcontainers, using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainer file=0]`postgresContainer` and [hotspot=inventoryContainer file=0]`inventoryContainer` test containers.
 
-After tests, the [hotspot=tearDown file=0]`tearDown` method stops the containers and closes the network.
+After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
 
 === Configuring Maven project
 
@@ -359,7 +352,7 @@ include::finish/pom.xml[]
 
 Add the required `dependency` for Testcontainers and Log4J libraries with `test` scope. The [hotspot=testcontainers file=0]`testcontainers` dependency offers a general-purpose API for managing container-based test environments. The [hotspot=slf4j file=0]`slf4j-reload4j` dependency enables the Simple Logging Facade for Java (SLF4J) API for trace logging during test execution and facilitates debugging and test performance tracking. 
 
-Also, add the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
+Also, add and config the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
 
 Save the changes, and press the `enter/return` key in your console window to run the tests. You will see the following output:
 
@@ -394,7 +387,6 @@ Also, run the following commands to stop the PostgreSQL container that was start
 [role='command']
 ```
 docker stop postgres-container
-docker rm postgres-container
 ```
 
 Because you have already built the `inventory` Docker image in the *Try what you'll build* section, there's no need to build it again here.

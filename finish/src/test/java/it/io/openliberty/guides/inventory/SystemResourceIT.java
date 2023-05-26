@@ -62,7 +62,9 @@ public class SystemResourceIT {
     // end::network1[]
 
     // tag::postgresContainer[]
+    // tag::GenericContainer[]
     private static GenericContainer<?> postgresContainer
+    // end::GenericContainer[]
         = new GenericContainer<>(DB_IMAGE)
               // tag::network2[]
               .withNetwork(network)
@@ -75,7 +77,9 @@ public class SystemResourceIT {
     // end::postgresContainer[]
 
     // tag::inventoryContainer[]
+    // tag::LibertyContainer[]
     private static LibertyContainer inventoryContainer
+    // end::LibertyContainer[]
         = new LibertyContainer(APP_IMAGE, testHttps(), HTTPS_PORT, HTTP_PORT)
               .withEnv("DB_HOSTNAME", DB_HOST)
               // tag::network3[]
