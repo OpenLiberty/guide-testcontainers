@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2022, 2023 IBM Corporation and others.
+ * Copyright (c) 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -9,27 +9,21 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 // end::copyright[]
-// tag::ReadinessCheck[]
 package io.openliberty.guides.inventory.health;
+
+import java.net.Socket;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.health.HealthCheck;
+import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
+import org.eclipse.microprofile.health.Readiness;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.health.Readiness;
-import org.eclipse.microprofile.health.HealthCheck;
-import org.eclipse.microprofile.health.HealthCheckResponse;
-import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
-
-import java.io.IOException;
-import java.net.Socket;
-
-// tag::Readiness[]
 @Readiness
-// end::Readiness[]
-// tag::ApplicationScoped[]
 @ApplicationScoped
-// end::ApplicationScoped[]
 public class ReadinessCheck implements HealthCheck {
 
     @Inject
@@ -55,4 +49,3 @@ public class ReadinessCheck implements HealthCheck {
         return responseBuilder.build();
     }
 }
-// end::ReadinessCheck[]

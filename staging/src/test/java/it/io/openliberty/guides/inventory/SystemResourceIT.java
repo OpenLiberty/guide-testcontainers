@@ -35,7 +35,7 @@ import jakarta.ws.rs.core.UriBuilder;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class SystemResourceIT {
-    
+
     private static int HTTP_PORT = Integer.parseInt(System.getProperty("http.port"));
     private static int HTTPS_PORT = Integer.parseInt(System.getProperty("https.port"));
     private static String APP_PATH = System.getProperty("context.root") + "/api";
