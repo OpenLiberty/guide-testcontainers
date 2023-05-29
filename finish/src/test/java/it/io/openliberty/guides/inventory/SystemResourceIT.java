@@ -109,8 +109,8 @@ public class SystemResourceIT {
     private static boolean testHttps() {
         return getProtocol().equalsIgnoreCase("https");
     }
-    
-    private static SystemResourceClient createRestClient(String urlPath) 
+
+    private static SystemResourceClient createRestClient(String urlPath)
             throws KeyStoreException {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
         if (testHttps()) {
@@ -145,7 +145,7 @@ public class SystemResourceIT {
             logger.info("Testing by using Testcontainers...");
             if (isServiceRunning("localhost", DB_PORT)) {
                 throw new Exception(
-                      "Postgres database is running locally. Stop it and retry.");                
+                      "Postgres database is running locally. Stop it and retry.");
             } else {
                 postgresContainer.start();
                 inventoryContainer.start();
