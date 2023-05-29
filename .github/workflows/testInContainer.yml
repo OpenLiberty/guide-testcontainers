@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Check for dockerenv file
         run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+      - name: Get files
+        uses: actions/checkout@v2
       - name: Where
         run: pwd |
              ls -Rl . |
