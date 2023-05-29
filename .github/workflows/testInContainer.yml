@@ -18,4 +18,6 @@ jobs:
       - name: Check for dockerenv file
         run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
       - name: Where
-        run: ls -Rl .
+        run: pwd |
+             ls -Rl .
+             ls -Rl $HOME
