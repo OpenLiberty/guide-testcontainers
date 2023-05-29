@@ -22,4 +22,4 @@ jobs:
       - name: List files
         run: ls -l .
       - name: Run test
-        run: cd scripts; chmod +x ./testApp.sh; ./testApp.sh
+        run: cd scripts; chmod +x ./testApp.sh; ls -l .; ./testApp.sh
