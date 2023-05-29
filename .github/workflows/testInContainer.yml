@@ -27,4 +27,7 @@ jobs:
       - name: Run test
         run: |
              cd finish
+             ls -l .
+             ls -l ..
+             ls -l ../scripts
              ../scripts/testApp.sh
