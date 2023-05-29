@@ -6,7 +6,7 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: drone:drone
+      image: drone/drone:latest
       credentials:
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_PASSWORD }}
