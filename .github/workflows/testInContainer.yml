@@ -22,6 +22,7 @@ jobs:
         run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
       - name: Get files
         uses: actions/checkout@v2
+      - name: Go to finish
+        run: cd finish
       - name: Run test
-        run: cd finish |
-             ls -l
+        run: ls -l .
