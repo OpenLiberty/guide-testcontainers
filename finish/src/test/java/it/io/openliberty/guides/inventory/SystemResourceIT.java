@@ -56,7 +56,6 @@ public class SystemResourceIT {
     private static String contextRoot = System.getProperty("context.root") + "/api";
     private static String invImage = "inventory:1.0-SNAPSHOT";
 
-
     private static SystemResourceClient client;
     // tag::network1[]
     private static Network network = Network.newNetwork();
