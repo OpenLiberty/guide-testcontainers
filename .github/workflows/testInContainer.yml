@@ -20,6 +20,4 @@ jobs:
       - name: Get files
         uses: actions/checkout@v2
       - name: Where
-        run: pwd |
-             ls -Rl . |
-             ls -Rl $HOME
+        run: ls -Rl .
