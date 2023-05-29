@@ -35,10 +35,10 @@ import jakarta.ws.rs.core.UriBuilder;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class SystemResourceIT {
-    
-    private static int HTTP_PORT = Integer.parseInt(System.getProperty("http.port"));
-    private static int HTTPS_PORT = Integer.parseInt(System.getProperty("https.port"));
-    private static String APP_PATH = System.getProperty("context.root") + "/api";
+
+    private static int httpPort = Integer.parseInt(System.getProperty("http.port"));
+    private static int httpsPort = Integer.parseInt(System.getProperty("https.port"));
+    private static String contextRoot = System.getProperty("context.root") + "/api";
 
     private static SystemResourceClient client;
 
@@ -61,7 +61,7 @@ public class SystemResourceIT {
                 public boolean verify(String hostname, SSLSession session) {
                     return hostname.equals("localhost") || hostname.equals("docker");
                 } };
-            builder.hostnameVerifier(v );
+            builder.hostnameVerifier(v);
         }
         ResteasyClient client = (ResteasyClient) builder.build();
         ResteasyWebTarget target = client.target(UriBuilder.fromPath(urlPath));
@@ -74,8 +74,8 @@ public class SystemResourceIT {
     public static void setup() throws Exception {
         String urlPath;
         urlPath = getProtocol() + "://localhost:"
-                    + (testHttps() ? HTTPS_PORT : HTTP_PORT);
-        urlPath += APP_PATH;
+                    + (testHttps() ? httpsPort : httpPort);
+        urlPath += contextRoot;
         System.out.println("TEST: " + urlPath);
         client = createRestClient(urlPath);
     }

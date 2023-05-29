@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2022, 2023 IBM Corporation and others.
+ * Copyright (c) 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -46,15 +46,15 @@ public class SystemResourceIT {
     // tag::getLogger[]
     private static Logger logger = LoggerFactory.getLogger(SystemResourceIT.class);
     // end::getLogger[]
-    
-    private static int HTTP_PORT = Integer.parseInt(System.getProperty("http.port"));
-    private static int HTTPS_PORT = Integer.parseInt(System.getProperty("https.port"));
-    private static String APP_PATH = System.getProperty("context.root") + "/api";
-    private static String APP_IMAGE = "inventory:1.0-SNAPSHOT";
 
-    private static String DB_HOST = "postgres";
-    private static int DB_PORT = 5432;
-    private static String DB_IMAGE = "postgres-sample:latest";
+    private static final String DB_HOST = "postgres";
+    private static final int DB_PORT = 5432;
+    private static final String DB_IMAGE = "postgres-sample:latest";
+
+    private static int httpPort = Integer.parseInt(System.getProperty("http.port"));
+    private static int httpsPort = Integer.parseInt(System.getProperty("https.port"));
+    private static String contextRoot = System.getProperty("context.root") + "/api";
+    private static String invImage = "inventory:1.0-SNAPSHOT";
 
     private static SystemResourceClient client;
     // tag::network1[]
@@ -80,13 +80,13 @@ public class SystemResourceIT {
     // tag::LibertyContainer[]
     private static LibertyContainer inventoryContainer
     // end::LibertyContainer[]
-        = new LibertyContainer(APP_IMAGE, testHttps(), HTTPS_PORT, HTTP_PORT)
+        = new LibertyContainer(invImage, testHttps(), httpsPort, httpPort)
               .withEnv("DB_HOSTNAME", DB_HOST)
               // tag::network3[]
               .withNetwork(network)
               // end::network3[]
               // tag::waitingFor[]
-              .waitingFor(Wait.forHttp("/health/ready").forPort(HTTP_PORT))
+              .waitingFor(Wait.forHttp("/health/ready").forPort(httpPort))
               // end::waitingFor[]
               // tag::withLogConsumer2[]
               .withLogConsumer(new Slf4jLogConsumer(logger));
@@ -104,7 +104,7 @@ public class SystemResourceIT {
         }
     }
     // end::isServiceRunning[]
-    
+
     private static String getProtocol() {
         return System.getProperty("test.protocol", "https");
     }
@@ -112,8 +112,8 @@ public class SystemResourceIT {
     private static boolean testHttps() {
         return getProtocol().equalsIgnoreCase("https");
     }
-    
-    private static SystemResourceClient createRestClient(String urlPath) 
+
+    private static SystemResourceClient createRestClient(String urlPath)
             throws KeyStoreException {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
         if (testHttps()) {
@@ -134,12 +134,12 @@ public class SystemResourceIT {
     @BeforeAll
     public static void setup() throws Exception {
         String urlPath;
-        if (isServiceRunning("localhost", HTTP_PORT)) {
+        if (isServiceRunning("localhost", httpPort)) {
             logger.info("Testing by dev mode or local runtime...");
             if (isServiceRunning("localhost", DB_PORT)) {
                 logger.info("The application is ready to test.");
                 urlPath = getProtocol() + "://localhost:"
-                          + (testHttps() ? HTTPS_PORT : HTTP_PORT);
+                          + (testHttps() ? httpsPort : httpPort);
             } else {
                 throw new Exception(
                       "Postgres database is not running");
@@ -148,14 +148,14 @@ public class SystemResourceIT {
             logger.info("Testing by using Testcontainers...");
             if (isServiceRunning("localhost", DB_PORT)) {
                 throw new Exception(
-                      "Postgres database is running locally. Stop it and retry.");                
+                      "Postgres database is running locally. Stop it and retry.");
             } else {
                 postgresContainer.start();
                 inventoryContainer.start();
                 urlPath = inventoryContainer.getBaseURL(getProtocol());
             }
         }
-        urlPath += APP_PATH;
+        urlPath += contextRoot;
         System.out.println("TEST: " + urlPath);
         client = createRestClient(urlPath);
     }

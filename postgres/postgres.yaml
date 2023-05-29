@@ -19,7 +19,6 @@ data:
     INCREMENT 1
     OWNED BY SystemData.id;
 ---
-# tag::deployment[]
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,7 +37,7 @@ spec:
         app: postgres
         type: db
     spec:
-      volumes:                             
+      volumes:
         - name: hookvolume
           configMap:
             name: poststarthook
@@ -51,7 +50,6 @@ spec:
           volumeMounts:
             - name: hookvolume
               mountPath: /docker-entrypoint-initdb.d
-          # tag::env[]
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -63,10 +61,7 @@ spec:
                 secretKeyRef:
                   name: post-app-credentials
                   key: password
-          # end::env[]
-# end::deployment[]
 ---
-# tag::service[]
 apiVersion: v1
 kind: Service
 metadata:
@@ -75,9 +70,8 @@ metadata:
     group: db
 spec:
   type: ClusterIP
-  selector:             
+  selector:
     app: postgres
   ports:
   - protocol: TCP
     port: 5432
-# tag::service[]

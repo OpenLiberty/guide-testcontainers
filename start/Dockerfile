@@ -5,7 +5,6 @@ FROM icr.io/appcafe/open-liberty:full-java11-openj9-ubi
 ARG VERSION=1.0
 ARG REVISION=SNAPSHOT
 
-# tag::label[]
 LABEL \
   org.opencontainers.image.authors="Your Name" \
   org.opencontainers.image.vendor="Open Liberty" \
@@ -18,7 +17,6 @@ LABEL \
   version="$VERSION-$REVISION" \
   summary="The inventory microservice from the Testcontainers guide" \
   description="This image contains the inventory microservice running with the Open Liberty runtime."
-# end::label[]
 
 USER root
 

@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2022, 2023 IBM Corporation and others.
+ * Copyright (c) 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -22,18 +22,11 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
-// tag::Entity[]
 @Entity
-// end::Entity[]
-// tag::Table[]
 @Table(name = "SystemData")
-// end::Table[]
-// tag::NamedQuery[]
 @NamedQuery(name = "SystemData.findAll", query = "SELECT e FROM SystemData e")
 @NamedQuery(name = "SystemData.findSystem",
     query = "SELECT e FROM SystemData e WHERE e.hostname = :hostname")
-// end::NamedQuery[]
-// tag::SystemData[]
 public class SystemData implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -117,4 +110,3 @@ public class SystemData implements Serializable {
         return false;
     }
 }
-// end::SystemData[]
