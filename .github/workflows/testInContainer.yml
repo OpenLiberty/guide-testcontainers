@@ -7,9 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: drone/drone:latest
-      credentials:
-        username: ${{ secrets.DOCKER_USER }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
       env:
         NODE_ENV: development
       ports:
@@ -25,4 +22,4 @@ jobs:
       - name: List files
         run: ls -l .
       - name: Run test
-        run: cd finish; ../scripts/testApp.sh
+        run: cd scripts; ./testApp.sh
