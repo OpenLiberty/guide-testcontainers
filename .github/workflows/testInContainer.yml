@@ -23,5 +23,6 @@ jobs:
         run: ls -l .
       - name: Run test
         run: |
+             export TESTCONTAINERS_RYUK_DISABLED=true 
              cd finish
-             mvn verify -Dregistry.username=${{ secrets.DOCKER_USERNAME }} -Dregistry.password=${{ secrets.DOCKER_PASSWORD }}
+             mvn -ntp verify -Dregistry.username=${{ secrets.DOCKER_USERNAME }} -Dregistry.password=${{ secrets.DOCKER_PASSWORD }}
