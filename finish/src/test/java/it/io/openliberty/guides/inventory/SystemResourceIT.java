@@ -49,12 +49,12 @@ public class SystemResourceIT {
 
     private static final String DB_HOST = "postgres";
     private static final int DB_PORT = 5432;
-    private static final String DB_IMAGE = "postgres-sample:latest";
+    private static final String DB_IMAGE = "guidesbot/postgres-sample:latest";
 
     private static int httpPort = Integer.parseInt(System.getProperty("http.port"));
     private static int httpsPort = Integer.parseInt(System.getProperty("https.port"));
     private static String contextRoot = System.getProperty("context.root") + "/api";
-    private static String invImage = "inventory:1.0-SNAPSHOT";
+    private static String invImage = "guidesbot/inventory:1.0-SNAPSHOT";
 
     private static SystemResourceClient client;
     // tag::network1[]
