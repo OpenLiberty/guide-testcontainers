@@ -22,4 +22,6 @@ jobs:
       - name: List files
         run: ls -l .
       - name: Run test
-        run: cd finish; ../scripts/testApp.sh
+        run: |
+             cd postgres
+             docker build -t postgres-sample .
