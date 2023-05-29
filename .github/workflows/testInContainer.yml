@@ -25,9 +25,4 @@ jobs:
       - name: List files
         run: ls -l .
       - name: Run test
-        run: |
-             cd finish
-             ls -l .
-             ls -l ..
-             ls -l ../scripts
-             ../scripts/testApp.sh
+        run: cd finish; ../scripts/testApp.sh
