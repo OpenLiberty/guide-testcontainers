@@ -147,6 +147,8 @@ public class SystemResourceIT {
                       "Postgres database is running locally. Stop it and retry.");
             } else {
                 postgresContainer.start();
+                System.out.println("*****" + postgresContainer.getHost());
+                System.out.println("*****" + postgresContainer.getFirstMappedPort());
                 inventoryContainer.start();
                 urlPath = inventoryContainer.getBaseURL(getProtocol());
             }
