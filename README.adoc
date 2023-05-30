@@ -64,13 +64,6 @@ include::{common-includes}/gitclone.adoc[]
 // =================================================================================================
 === Try what you'll build
 
-// file 0
-pom.xml
-[source, XML, linenums, role='code_column']
-----
-include::finish/pom.xml[]
-----
-
 This guide use Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Navigate to the `postgres` directory and run the following commands to use the Dockerfile to build the image:
 
 [role='command']
@@ -80,8 +73,6 @@ docker build -t postgres-sample .
 ```
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
-
-Because the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` in the Maven pom.xml file is configured to copy the PostgreSQL JDBC (Java Database Connectivity) driver into the Liberty server's shared resources directory during the `prepare-package` phase, running `mvn package` ensures the driver is available for your application when running on the Liberty server. 
 
 To try out the test, first go to the `finish` directory and run the `mvn package` command so that the `.war` file resides in the `target` directory and the `.jar` PostgreSQL JDBC driver file resides in the `target/liberty/wlp/usr/shared/resources` directory:
 
@@ -338,7 +329,7 @@ The [hotspot=waitingFor file=0]`waitingFor()` method overrides the [hotspot=wait
 
 The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
-The updated [hotspot=setup file=0]`setup()` method prepares the test environment. It checks if the tests are running in dev mode or local runtime, or via Testcontainers, using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainer file=0]`postgresContainer` and [hotspot=inventoryContainer file=0]`inventoryContainer` test containers.
+The updated [hotspot=setup file=0]`setup()` method prepares the test environment. It checks if the tests are running in dev mode or local runtime, or via Testcontainers, using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
 
 After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
 
@@ -361,7 +352,9 @@ include::finish/pom.xml[]
 
 Add the required `dependency` for Testcontainers and Log4J libraries with `test` scope. The [hotspot=testcontainers file=0]`testcontainers` dependency offers a general-purpose API for managing container-based test environments. The [hotspot=slf4j file=0]`slf4j-reload4j` dependency enables the Simple Logging Facade for Java (SLF4J) API for trace logging during test execution and facilitates debugging and test performance tracking. 
 
-Also, add and config the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
+Because the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` in the Maven pom.xml file is configured to copy the PostgreSQL JDBC (Java Database Connectivity) driver into the Liberty server's shared resources directory during the `prepare-package` phase, running `mvn package` ensures the driver is available for your application when running on the Liberty server. 
+
+Also, add and configure the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
 
 Save the changes, and press the `enter/return` key in your console window to run the tests. You will see the following output:
 

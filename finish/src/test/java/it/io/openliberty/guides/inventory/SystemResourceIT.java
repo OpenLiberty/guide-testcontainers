@@ -150,8 +150,12 @@ public class SystemResourceIT {
                 throw new Exception(
                       "Postgres database is running locally. Stop it and retry.");
             } else {
+                // tag::postgresContainerStart[]
                 postgresContainer.start();
+                // end::postgresContainerStart[]
+                // tag::inventoryContainerStart[]
                 inventoryContainer.start();
+                // end::inventoryContainerStart[]
                 urlPath = inventoryContainer.getBaseURL(getProtocol());
             }
         }
