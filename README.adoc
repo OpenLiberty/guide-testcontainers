@@ -38,7 +38,7 @@ Sometimes tests might pass in development and testing (dev/test) environments, b
 
 === What is Testcontainers?
 
-Testcontainers is an open source library that wraps Docker in a Java API. It's often used in testing applications that involve external resource dependencies such as databases, message queues, or web services. Testcontainers supports any Docker image, which allows for uniform and portable testing environments. By encapsulating dependencies in containers, it ensures test consistency and simplifies the setup process.
+Testcontainers is an open source library that wraps Docker in a Java API. It is often used in testing applications that involve external resource dependencies such as databases, message queues, or web services. Testcontainers supports any Docker image, which allows for uniform and portable testing environments. By encapsulating dependencies in containers, it ensures test consistency and simplifies the setup process.
 
 The microservice that you'll be working with is called `inventory`. The `inventory` microservice persists data into a PostgreSQL database and supports create, retrieve, update, and delete (CRUD) operations on the database records. You will write integration tests for the application by using Testcontainers to run it in Docker containers.
 
@@ -64,7 +64,7 @@ include::{common-includes}/gitclone.adoc[]
 // =================================================================================================
 === Try what you'll build
 
-This guide use Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Navigate to the `postgres` directory and run the following commands to use the Dockerfile to build the image:
+This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Navigate to the `postgres` directory and run the following commands to use the Dockerfile to build the image:
 
 [role='command']
 ```
@@ -74,7 +74,7 @@ docker build -t postgres-sample .
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
-To try out the test, first go to the `finish` directory and run the `mvn package` command so that the `.war` file resides in the `target` directory and the `.jar` PostgreSQL JDBC driver file resides in the `target/liberty/wlp/usr/shared/resources` directory:
+To try out the test, first go to the `finish` directory and run the `mvn package` command so that the `.war` file resides in the `target` directory, and the `.jar` PostgreSQL JDBC driver file resides in the `target/liberty/wlp/usr/shared/resources` directory:
 
 [role='command']
 ```
@@ -89,7 +89,7 @@ Build the `inventory` Docker image with the following command:
 docker build -t inventory:1.0-SNAPSHOT .
 ```
 
-Now, run the Maven `verify` goal which compiles the java files, starts the containers, runs the tests, and then stops the containers.
+Now, run the Maven `verify` goal, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
 
 [role='command']
 ```
@@ -170,7 +170,7 @@ Point your browser to the http://localhost:9080/openapi/ui URL to try out the `i
 
 === Building test REST client
 
-Test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring it responds correctly to various scenarios and conditions.
+Test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions.
 
 Begin by creating a test REST client interface for the `inventory` microservice.
 
@@ -257,7 +257,7 @@ Next, you will learn how to use Testcontainers to verify your microservices in t
 
 === Building Testcontainer for Open Liberty
 
-Start by defining a custom `LibertyContainer` class which provides a framework to start and access a containerized version of the Open Liberty application for testing.
+Start by defining a custom `LibertyContainer` class, which provides a framework to start and access a containerized version of the Open Liberty application for testing.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -329,7 +329,7 @@ The [hotspot=waitingFor file=0]`waitingFor()` method overrides the [hotspot=wait
 
 The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
-The updated [hotspot=setup file=0]`setup()` method prepares the test environment. It checks if the tests are running in dev mode or local runtime, or via Testcontainers, using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
+The updated [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
 
 After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
 
@@ -380,7 +380,7 @@ Notice that the `Testing by dev mode or local runtime` log indicates that the te
 // =================================================================================================
 == Testing outside of development mode
 
-Running tests in development mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty server in a controlled, self-contained environment, ensuring your tests run consistently regardless of the deployment context.
+Running tests in development mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty server in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
 
 To test outside of development mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the server, or by typing `q` and then pressing the `enter/return` key.
 
