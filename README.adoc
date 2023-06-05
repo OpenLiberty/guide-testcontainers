@@ -113,11 +113,9 @@ You will see the following output:
 ----
 
 // =================================================================================================
-// Implementing integration tests
+// Implementing integration tests to use Testcontainers
 // =================================================================================================
-== Implementing integration tests
-
-In this section, you will implement integration tests to verify the functionality of the `inventory` microservice under the local runtime environment.
+== Implementing integration tests to use Testcontainers
 
 Navigate to the `start` directory to begin.
 
@@ -206,58 +204,9 @@ include::finish/src/test/java/it/io/openliberty/guides/inventory/SystemData.java
 
 The [hotspot file=1]`SystemData` class contains the ID, hostname, operating system name, Java version, and heap size properties. The various [hotspot=getMethods file=1]`get` and [hotspot=setMethods file=1]`set` methods within this class enable you to view and edit the properties of each system in the inventory.
 
-=== Building test cases
-
-Now you can start writing the tests that use the `SystemResourceClient` REST client.
-
-[role="code_command hotspot file=0" ,subs="quotes"]
-----
-#Create the `SystemResourceIT.java` file.#
-`src/test/java/it/io/openliberty/guides/inventory/SystemResourceIT.java`
-----
-
-// file 0
-SystemResourceIT.java
-[source, java, linenums, role="code_column hide_tags=copyright"]
-----
-include::staging/src/test/java/it/io/openliberty/guides/inventory/SystemResourceIT.java[]
-----
-
-The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface, and configures a hostname verifier if the tests run over HTTPS.
-
-The [hotspot=setup file=0]`setup()` method determines the protocol to use (HTTP or HTTPS) and builds the base URL path for the REST client. 
-
-The [hotspot=testAddSystem file=0]`testAddSystem()` verifies the [hotspot=addSystem file=0]`addSystem` and [hotspot=listContents file=0]`listContents` endpoints.
-
-The [hotspot=testUpdateSystem file=0]`testUpdateSystem()` verifies the [hotspot=updateSystem file=0]`updateSystem` and [hotspot=getSystem file=0]`getSystem` endpoints.
-
-The [hotspot=testRemoveSystem file=0]`testRemoveSystem()` verifies the [hotspot=removeSystem file=0]`removeSystem` endpoint.
-
-Because you started Open Liberty in dev mode, you can run the tests by pressing the `enter/return` key from the command-line session where you started dev mode. You will see the following output:
-
-[role="no_copy"]
-----
- -------------------------------------------------------
-  T E S T S
- -------------------------------------------------------
- Running it.io.openliberty.guides.inventory.SystemResourceIT
- Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.884 s - in it.io.openliberty.guides.inventory.SystemResourceIT
-
- Results:
-
- Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
-----
-
-// =================================================================================================
-// Enhancing integration tests to use Testcontainers
-// =================================================================================================
-== Enhancing integration tests to use Testcontainers
-
-Next, you will learn how to use Testcontainers to verify your microservices in the same Docker containers that you'll use in production.
-
 === Building Testcontainer for Open Liberty
 
-Start by defining a custom `LibertyContainer` class, which provides a framework to start and access a containerized version of the Open Liberty application for testing.
+Next, you'll define a custom `LibertyContainer` class, which provides a framework to start and access a containerized version of the Open Liberty application for testing.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -299,13 +248,13 @@ include::finish/src/test/resources/log4j.properties[]
 
 The [hotspot file=1]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=1]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior. For more information about log4j properties and configuration, see the https://logging.apache.org/log4j/1.2/manual.html[Log4j 1.2 official documentation^].
 
-=== Starting Testcontainers
+=== Building test cases
 
-The next step is to integrate Testcontainers into your tests.
+Now that the setup is complete, you can start writing the tests that use the `SystemResourceClient` REST client and the Testcontainers integration.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
-#Replace the `SystemResourceIT.java` file.#
+#Create the `SystemResourceIT.java` file.#
 `src/test/java/it/io/openliberty/guides/inventory/SystemResourceIT.java`
 ----
 
@@ -329,9 +278,17 @@ The [hotspot=waitingFor file=0]`waitingFor()` method overrides the [hotspot=wait
 
 The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
-The updated [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
+The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface, and configures a hostname verifier if the tests run over HTTPS. 
+
+The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
 
 After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
+
+The [hotspot=testAddSystem file=0]`testAddSystem()` verifies the [hotspot=addSystem file=0]`addSystem` and [hotspot=listContents file=0]`listContents` endpoints.
+
+The [hotspot=testUpdateSystem file=0]`testUpdateSystem()` verifies the [hotspot=updateSystem file=0]`updateSystem` and [hotspot=getSystem file=0]`getSystem` endpoints.
+
+The [hotspot=testRemoveSystem file=0]`testRemoveSystem()` verifies the [hotspot=removeSystem file=0]`removeSystem` endpoint.
 
 === Configuring Maven project
 
