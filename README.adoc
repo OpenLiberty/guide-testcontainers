@@ -282,13 +282,13 @@ The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST 
 
 The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
 
-After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
-
 The [hotspot=testAddSystem file=0]`testAddSystem()` verifies the [hotspot=addSystem file=0]`addSystem` and [hotspot=listContents file=0]`listContents` endpoints.
 
 The [hotspot=testUpdateSystem file=0]`testUpdateSystem()` verifies the [hotspot=updateSystem file=0]`updateSystem` and [hotspot=getSystem file=0]`getSystem` endpoints.
 
 The [hotspot=testRemoveSystem file=0]`testRemoveSystem()` verifies the [hotspot=removeSystem file=0]`removeSystem` endpoint.
+
+After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
 
 === Configuring Maven project
 

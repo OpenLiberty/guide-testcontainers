@@ -113,6 +113,7 @@ public class SystemResourceIT {
         return getProtocol().equalsIgnoreCase("https");
     }
 
+    // tag::createRestClient[]
     private static SystemResourceClient createRestClient(String urlPath)
             throws KeyStoreException {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
@@ -129,6 +130,7 @@ public class SystemResourceIT {
         ResteasyWebTarget target = client.target(UriBuilder.fromPath(urlPath));
         return target.proxy(SystemResourceClient.class);
     }
+    // end::createRestClient[]
 
     // tag::setup[]
     @BeforeAll
