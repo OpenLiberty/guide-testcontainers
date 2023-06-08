@@ -246,7 +246,7 @@ log4j.properties
 include::finish/src/test/resources/log4j.properties[]
 ----
 
-The [hotspot file=1]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=1]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior. For more information about log4j properties and configuration, see the https://logging.apache.org/log4j/1.2/manual.html[Log4j 1.2 official documentation^].
+The [hotspot file=1]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=1]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior.
 
 === Building test cases
 
@@ -307,7 +307,7 @@ pom.xml
 include::finish/pom.xml[]
 ----
 
-Add the required `dependency` for Testcontainers and Log4J libraries with `test` scope. The [hotspot=testcontainers file=0]`testcontainers` dependency offers a general-purpose API for managing container-based test environments. The [hotspot=slf4j file=0]`slf4j-reload4j` dependency enables the Simple Logging Facade for Java (SLF4J) API for trace logging during test execution and facilitates debugging and test performance tracking. 
+Add the required `dependency` for Testcontainers and Log4J libraries with `test` scope. The [hotspot=testcontainers file=0]`testcontainers` dependency offers a general-purpose API for managing container-based test environments. The [hotspot=slf4j file=0]`slf4j-reload4j` and [hotspot=slf4j-api file=0]`slf4j-api` dependencies enable the Simple Logging Facade for Java (SLF4J) API for trace logging during test execution and facilitates debugging and test performance tracking. 
 
 Because the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` in the Maven pom.xml file is configured to copy the PostgreSQL JDBC (Java Database Connectivity) driver into the Liberty server's shared resources directory during the `prepare-package` phase, running `mvn package` ensures the driver is available for your application when running on the Liberty server. 
 
@@ -367,6 +367,13 @@ You will see the following output:
  Running it.io.openliberty.guides.inventory.SystemResourceIT
  it.io.openliberty.guides.inventory.SystemResourceIT  - Testing by using Testcontainers...
  ...
+ tc.postgres-sample:latest  - Creating container for image: postgres-sample:latest
+ tc.postgres-sample:latest  - Container postgres-sample:latest is starting: 7cf2e2c6a505f41877014d08b7688399b3abb9725550e882f1d33db8fa4cff5a
+ tc.postgres-sample:latest  - Container postgres-sample:latest started in PT2.925405S
+ tc.inventory:1.0-SNAPSHOT  - Creating container for image: inventory:1.0-SNAPSHOT
+ tc.inventory:1.0-SNAPSHOT  - Container inventory:1.0-SNAPSHOT is starting: 432ac739f377abe957793f358bbb85cc916439283ed2336014cacb585f9992b8
+ it.io.openliberty.guides.inventory.SystemResourceIT  - STDOUT: [AUDIT   ] CWWKF0011I: The defaultServer server is ready to run a smarter planet. The defaultServer server started in 7.855 seconds.
+
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.208 s - in it.io.openliberty.guides.inventory.SystemResourceIT
 
  Results:
