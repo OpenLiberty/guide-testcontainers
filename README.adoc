@@ -122,9 +122,7 @@ You'll develop integration tests capable of running in both dev mode and a CI/CD
 
 Navigate to the `start` directory to begin.
 
-Running the PostgreSQL database is integral for the `inventory` microservice, as it handles the persistence of data.
-
-Run the following command to start the PostgreSQL database, which runs the `postgres-sample` image in a Docker container and maps `5432` port from the container to your host machine:
+The PostgreSQL database is integral for the `inventory` microservice as it handles the persistence of data. Run the following command to start the PostgreSQL database, which runs the `postgres-sample` image in a Docker container and maps `5432` port from the container to your host machine:
 
 [role='command']
 ```
