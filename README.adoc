@@ -255,9 +255,7 @@ The [hotspot file=1]`log4j.properties` file configures the root logger, appender
 
 === Building test cases
 
-Now that the setup is complete, you can start writing the tests that use the `SystemResourceClient` REST client and the Testcontainers integration.
-
-In this section, you'll learn how to create test cases using the test REST client and Testcontainers. You'll set up a multi-container test environment, determine the appropriate runtime environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
+Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate runtime environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -299,7 +297,7 @@ After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containe
 
 === Configuring Maven project
 
-Next, you'll learn to prepare your Maven project for test execution. You'll add the required dependencies for Testcontainers and logging, set up Maven to copy the PostgreSQL JDBC driver during the build phase, and configure the Liberty Maven Plugin to handle PostgreSQL dependencies.
+Next, you'll learn to prepare your Maven project for test execution. You'll add the required dependencies for Testcontainers and logging, set up Maven to copy the PostgreSQL JDBC driver during the build phase, and configure the Liberty Maven Plugin to handle PostgreSQL dependency.
 
 Configure your test build with Maven. 
 
