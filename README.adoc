@@ -93,6 +93,7 @@ Now, run the Maven `verify` goal, which compiles the Java files, starts the cont
 
 [role='command']
 ```
+export TESTCONTAINERS_RYUK_DISABLED=true
 mvn verify
 ```
 
@@ -117,7 +118,11 @@ You will see the following output:
 // =================================================================================================
 == Implementing integration tests to use Testcontainers
 
+You'll develop integration tests capable of running in both dev mode and a CI/CD pipeline. These flexible tests ensure the application's reliability across diverse environments.
+
 Navigate to the `start` directory to begin.
+
+Running the PostgreSQL database is integral for the `inventory` microservice, as it handles the persistence of data.
 
 Run the following command to start the PostgreSQL database, which runs the `postgres-sample` image in a Docker container and maps `5432` port from the container to your host machine:
 
@@ -125,8 +130,6 @@ Run the following command to start the PostgreSQL database, which runs the `post
 ```
 docker run --name postgres-container --rm -p 5432:5432 -d postgres-sample
 ```
-
-The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting development mode with container support, known as dev mode. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
 
 Retrieve the PostgreSQL container IP address by running the following command:
 
@@ -141,6 +144,8 @@ The command returns the PostgreSQL container IP address:
 ----
 172.17.0.2
 ----
+
+The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting dev mode with container support. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
 
 Build and run the container by running the `devc` goal with the PostgreSQL container IP address. If your PostgreSQL container IP address is not `172.17.0.2`, replace the command with the right IP address.
 
@@ -168,7 +173,7 @@ Point your browser to the http://localhost:9080/openapi/ui URL to try out the `i
 
 === Building test REST client
 
-Test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions.
+Test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions. Using a REST client for testing ensures reliable interaction with the `inventory` microservice across various deployment environments: local, Docker container, or Testcontainers.
 
 Begin by creating a test REST client interface for the `inventory` microservice.
 
@@ -206,7 +211,9 @@ The [hotspot file=1]`SystemData` class contains the ID, hostname, operating syst
 
 === Building Testcontainer for Open Liberty
 
-Next, you'll define a custom `LibertyContainer` class, which provides a framework to start and access a containerized version of the Open Liberty application for testing.
+Next, you'll learn to create a custom class that extends Testcontainers' generic container to define specific configurations that suit your application's requirements.
+
+Define a custom `LibertyContainer` class, which provides a framework to start and access a containerized version of the Open Liberty application for testing.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -252,6 +259,8 @@ The [hotspot file=1]`log4j.properties` file configures the root logger, appender
 
 Now that the setup is complete, you can start writing the tests that use the `SystemResourceClient` REST client and the Testcontainers integration.
 
+In this section, you'll learn how to create test cases using the test REST client and Testcontainers. You'll set up a multi-container test environment, determine the appropriate runtime environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
+
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
 #Create the `SystemResourceIT.java` file.#
@@ -292,7 +301,9 @@ After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containe
 
 === Configuring Maven project
 
-Next, configure your test build with Maven. 
+Next, you'll learn to prepare your Maven project for test execution. You'll add the required dependencies for Testcontainers and logging, set up Maven to copy the PostgreSQL JDBC driver during the build phase, and configure the Liberty Maven Plugin to handle PostgreSQL dependencies.
+
+Configure your test build with Maven. 
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -333,13 +344,13 @@ Save the changes, and press the `enter/return` key in your console window to run
 Notice that the `Testing by dev mode or local runtime` log indicates that the tests ran in dev mode.
 
 // =================================================================================================
-// Testing outside of development mode
+// Running tests in a CI/CD pipeline
 // =================================================================================================
-== Testing outside of development mode
+== Running tests in a CI/CD pipeline
 
-Running tests in development mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty server in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
+Running tests in dev mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty server in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
 
-To test outside of development mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the server, or by typing `q` and then pressing the `enter/return` key.
+To test outside of dev mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the server, or by typing `q` and then pressing the `enter/return` key.
 
 Also, run the following commands to stop the PostgreSQL container that was started in the previous section:
 
@@ -350,7 +361,7 @@ docker stop postgres-container
 
 Because you have already built the `inventory` Docker image in the *Try what you'll build* section, there's no need to build it again here.
 
-Now, use the following Maven goal to run the tests from a cold start outside of development mode:
+Now, use the following Maven goal to run the tests from a cold start outside of dev mode:
 
 [role='command']
 ```

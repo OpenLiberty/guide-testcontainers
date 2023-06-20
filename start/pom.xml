@@ -115,7 +115,7 @@
                         </dependencyGroup>
                     </copyDependencies>
                 </configuration>
-                <version>3.8.1</version>
+                <version>3.8.2</version>
             </plugin>
             <!-- tag::failsafe[] -->
             <plugin>
