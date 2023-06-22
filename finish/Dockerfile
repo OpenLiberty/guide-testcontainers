@@ -1,5 +1,5 @@
 # tag::from[]
-FROM icr.io/appcafe/open-liberty:full-java11-openj9-ubi
+FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
 # end::from[]
 
 ARG VERSION=1.0
@@ -23,6 +23,8 @@ USER root
 COPY --chown=1001:0 \
     src/main/liberty/config/ \
     /config/
+
+RUN features.sh
 
 COPY --chown=1001:0 \
     target/inventory.war \
