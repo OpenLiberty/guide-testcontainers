@@ -161,7 +161,7 @@ You need to wait a while to let dev mode start. After you see the following mess
 *    ...
 *    Docker network information:
 *        Container name: [ liberty-dev ]
-*        IP address [ 172.17.0.2 ] on Docker network [ bridge ]
+*        IP address [ 172.17.0.3 ] on Docker network [ bridge ]
 *    ...
 ----
 
@@ -231,6 +231,8 @@ The [hotspot file=0]`LibertyContainer` class extends the [hotspot=GenericContain
 The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts(port)` method exposes specified ports from the container's perspective, allowing test clients to communicate with services running inside the container. To avoid any port conflicts, Testcontainers assigns random host ports to these exposed container ports. 
 
 The [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty server has started successfully.
+
+For more information about Testcontainers APIs and its functionality, refer to the https://javadoc.io/doc/org.testcontainers/testcontainers/latest/index.html[Testcontainers JavaDocs^].
 
 Now you can set up trace logging for your tests. 
 
@@ -361,6 +363,7 @@ Now, use the following Maven goal to run the tests from a cold start outside of 
 
 [role='command']
 ```
+export TESTCONTAINERS_RYUK_DISABLED=true
 mvn verify
 ```
 

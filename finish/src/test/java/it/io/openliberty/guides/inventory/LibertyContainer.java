@@ -19,9 +19,9 @@ public class LibertyContainer extends GenericContainer<LibertyContainer> {
 // end::GenericContainer[]
 
     public LibertyContainer(
-    	String imageName, boolean testHttps, int httpsPort, int httpPort) {
-        
-    	super(imageName);
+        String imageName, boolean testHttps, int httpsPort, int httpPort) {
+
+        super(imageName);
         if (testHttps) {
             // tag::addExposedPorts1[]
             addExposedPorts(httpsPort, httpPort);
@@ -40,7 +40,7 @@ public class LibertyContainer extends GenericContainer<LibertyContainer> {
 
     // tag::getBaseURL[]
     public String getBaseURL(String protocol) throws IllegalStateException {
-    	return protocol + "://" + getHost() + ":" + getFirstMappedPort();
+        return protocol + "://" + getHost() + ":" + getFirstMappedPort();
     }
     // end::getBaseURL[]
 
