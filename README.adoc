@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2023 IBM Corporation and others.
+// Copyright (c) 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -152,7 +152,7 @@ Build and run the container by running the `devc` goal with the PostgreSQL conta
 mvn liberty:devc -DdockerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
 
-You need to wait a while to let dev mode start. After you see the following message, your application server in dev mode is ready:
+You need to wait a while to let dev mode start. After you see the following message, your Liberty instance is ready in dev mode:
 
 [role="no_copy"]
 ----
@@ -230,7 +230,7 @@ The [hotspot file=0]`LibertyContainer` class extends the [hotspot=GenericContain
 
 The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts(port)` method exposes specified ports from the container's perspective, allowing test clients to communicate with services running inside the container. To avoid any port conflicts, Testcontainers assigns random host ports to these exposed container ports. 
 
-The [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty server has started successfully.
+The [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty instance has started successfully.
 
 For more information about Testcontainers APIs and its functionality, refer to the https://javadoc.io/doc/org.testcontainers/testcontainers/latest/index.html[Testcontainers JavaDocs^].
 
@@ -318,7 +318,7 @@ include::finish/pom.xml[]
 
 Add the required `dependency` for Testcontainers and Log4J libraries with `test` scope. The [hotspot=testcontainers file=0]`testcontainers` dependency offers a general-purpose API for managing container-based test environments. The [hotspot=slf4j file=0]`slf4j-reload4j` and [hotspot=slf4j-api file=0]`slf4j-api` dependencies enable the Simple Logging Facade for Java (SLF4J) API for trace logging during test execution and facilitates debugging and test performance tracking. 
 
-The Maven pom.xml file contains a configuration for the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` to copy the PostgreSQL JDBC driver into the Liberty server's shared resources directory. This setup occurs during the `prepare-package` phase. As a result, running the `mvn package` command ensures the PostgreSQL driver is prepared and accessible for your application when it runs on the Liberty server.
+The Maven pom.xml file contains a configuration for the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` to copy the PostgreSQL JDBC driver into the Liberty configuration's shared resources directory. This setup occurs during the `prepare-package` phase. As a result, running the `mvn package` command ensures the PostgreSQL driver is prepared and accessible for your application when it runs on the Liberty.
 
 Also, add and configure the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
 
@@ -346,9 +346,9 @@ Notice that the `Testing by dev mode or local runtime` log indicates that the te
 // =================================================================================================
 == Running tests in a CI/CD pipeline
 
-Running tests in dev mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty server in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
+Running tests in dev mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty instance in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
 
-To test outside of dev mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the server, or by typing `q` and then pressing the `enter/return` key.
+To test outside of dev mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty, or by typing `q` and then pressing the `enter/return` key.
 
 Also, run the following commands to stop the PostgreSQL container that was started in the previous section:
 
