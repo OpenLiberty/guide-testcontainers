@@ -232,30 +232,9 @@ The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts(p
 
 The [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty instance has started successfully.
 
-The [hotspot=waitingFor file=0]`getBaseURL()` method contructs the base URL to access the container.
+The [hotspot=getBaseURL file=0]`getBaseURL()` method contructs the base URL to access the container.
 
 For more information about Testcontainers APIs and its functionality, refer to the https://javadoc.io/doc/org.testcontainers/testcontainers/latest/index.html[Testcontainers JavaDocs^].
-
-=== Setting up logs
-
-Having reliable logs is essential for efficient debugging, as they provide detailed insights into the test execution flow and help pinpoint issues during test failures. Testcontainers' built-in `Slf4jLogConsumer` enables integration of container output directly with the JUnit process, enhancing log analysis and simplifying test creation and debugging.
-
-Create the log4j properties to configure the logging behavior in your tests.
-
-[role="code_command hotspot file=0" ,subs="quotes"]
-----
-#Create the `log4j.properties` file.#
-`src/test/resources/log4j.properties`
-----
-
-// file 0
-log4j.properties
-[source, properties, linenums, role='code_column']
-----
-include::finish/src/test/resources/log4j.properties[]
-----
-
-The [hotspot file=0]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=0]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior.
 
 
 === Building test cases
@@ -299,6 +278,29 @@ The [hotspot=testUpdateSystem file=0]`testUpdateSystem()` verifies the [hotspot=
 The [hotspot=testRemoveSystem file=0]`testRemoveSystem()` verifies the [hotspot=removeSystem file=0]`removeSystem` endpoint.
 
 After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
+
+
+=== Setting up logs
+
+Having reliable logs is essential for efficient debugging, as they provide detailed insights into the test execution flow and help pinpoint issues during test failures. Testcontainers' built-in `Slf4jLogConsumer` enables integration of container output directly with the JUnit process, enhancing log analysis and simplifying test creation and debugging.
+
+Create the log4j properties to configure the logging behavior in your tests.
+
+[role="code_command hotspot file=0" ,subs="quotes"]
+----
+#Create the `log4j.properties` file.#
+`src/test/resources/log4j.properties`
+----
+
+// file 0
+log4j.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/src/test/resources/log4j.properties[]
+----
+
+The [hotspot file=0]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=0]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior.
+
 
 === Configuring Maven project
 
