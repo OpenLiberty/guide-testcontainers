@@ -267,7 +267,7 @@ Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hot
 ReadinessCheck.java
 [source, java, linenums, role="code_column hide_tags=copyright"]
 ----
-include::finish/src/java/io/openliberty/guides/inventory/health/ReadinessCheck.java[]
+include::finish/src/main/java/io/openliberty/guides/inventory/health/ReadinessCheck.java[]
 ----
 
 Because the `inventory` service provides the [hotspot file=2]`/health/ready` health readiness check, call the [hotspot=waitingFor file=0]`waitingFor()` method again to override the default [hotspot=waitingFor file=1]`waitingFor()` method in [hotspot file=1]`LibertyContainer`. That ensures the `inventoryContainer` is ready before tests run by checking the [hotspot=waitingFor file=0]`/health/ready` REST API instead of the log message. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
