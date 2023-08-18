@@ -110,12 +110,12 @@ public class SystemResourceIT {
             throws KeyStoreException {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
         builder.trustStore(KeyStore.getInstance("PKCS12"));
-        HostnameVerifier v = new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return hostname.equals("localhost") || hostname.equals("docker");
-            } };
-        builder.hostnameVerifier(v);
+        builder.hostnameVerifier(
+            new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return hostname.equals("localhost") || hostname.equals("docker");
+                }});
         ResteasyClient client = (ResteasyClient) builder.build();
         ResteasyWebTarget target = client.target(UriBuilder.fromPath(urlPath));
         return target.proxy(SystemResourceClient.class);

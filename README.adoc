@@ -274,7 +274,7 @@ Because the `inventory` service provides the [hotspot file=2]`/health/ready` hea
 
 The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
-The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface, and configures a hostname verifier if the tests run over HTTPS. 
+The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface, and configures a hostname verifier for testing over the HTTPS protocol.
 
 The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
 
