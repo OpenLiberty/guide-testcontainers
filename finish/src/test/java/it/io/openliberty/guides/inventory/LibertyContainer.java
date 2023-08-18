@@ -24,6 +24,7 @@ public class LibertyContainer extends GenericContainer<LibertyContainer> {
         super(imageName);
         // tag::addExposedPorts1[]
         addExposedPorts(httpsPort, httpPort);
+        // end::addExposedPorts1[]
         // wait for smarter planet message by default
         // tag::waitingFor[]
         waitingFor(Wait.forLogMessage("^.*CWWKF0011I.*$", 1));
