@@ -284,8 +284,6 @@ After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containe
 
 Having reliable logs is essential for efficient debugging, as they provide detailed insights into the test execution flow and help pinpoint issues during test failures. Testcontainers' built-in `Slf4jLogConsumer` enables integration of container output directly with the JUnit process, enhancing log analysis and simplifying test creation and debugging.
 
-Create the log4j properties to configure the logging behavior in your tests.
-
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
 #Create the `log4j.properties` file.#
@@ -306,7 +304,6 @@ The [hotspot file=0]`log4j.properties` file configures the root logger, appender
 
 Next, you'll learn to prepare your Maven project for test execution. You'll add the required dependencies for Testcontainers and logging, set up Maven to copy the PostgreSQL JDBC driver during the build phase, and configure the Liberty Maven Plugin to handle PostgreSQL dependency.
 
-Configure your test build with Maven. 
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -327,7 +324,7 @@ The Maven pom.xml file contains a configuration for the [hotspot=maven-dependenc
 
 Also, add and configure the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
 
-Save the changes, and press the `enter/return` key in your console window to run the tests. You will see the following output:
+Because you started Open Liberty in dev mode, all the changes were automatically picked up. You can run the tests by pressing the `enter/return` key from the command-line session where you started dev mode. You will see the following output:
 
 [role="no_copy"]
 ----
