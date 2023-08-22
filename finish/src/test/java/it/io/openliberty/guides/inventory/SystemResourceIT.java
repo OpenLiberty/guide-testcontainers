@@ -116,7 +116,7 @@ public class SystemResourceIT {
     public static void setup() throws Exception {
         String urlPath;
         if (isServiceRunning("localhost", httpPort)) {
-            logger.info("Testing by dev mode or local runtime...");
+            logger.info("Testing by dev mode or local Liberty...");
             if (isServiceRunning("localhost", DB_PORT)) {
                 logger.info("The application is ready to test.");
                 urlPath = "http://localhost:" + httpPort;

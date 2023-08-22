@@ -239,7 +239,7 @@ For more information about Testcontainers APIs and its functionality, refer to t
 
 === Building test cases
 
-Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate runtime environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
+Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -276,7 +276,7 @@ The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogCo
 
 The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface.
 
-The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
+The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the test is running in dev mode or there is a local running Liberty instance, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. In the case of no running Liberty instance, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers. Otherwise, it ensures that the Postgres database is running locally.
 
 The [hotspot=testAddSystem file=0]`testAddSystem()` verifies the [hotspot=addSystem file=0]`addSystem` and [hotspot=listContents file=0]`listContents` endpoints.
 
@@ -339,7 +339,7 @@ Because you started Open Liberty in dev mode, all the changes were automatically
   T E S T S
  -------------------------------------------------------
  Running it.io.openliberty.guides.inventory.SystemResourceIT
- it.io.openliberty.guides.inventory.SystemResourceIT  - Testing by dev mode or local runtime...
+ it.io.openliberty.guides.inventory.SystemResourceIT  - Testing by dev mode or local Liberty...
  ...
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.873 s - in it.io.openliberty.guides.inventory.SystemResourceIT
 
@@ -348,7 +348,7 @@ Because you started Open Liberty in dev mode, all the changes were automatically
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-Notice that the `Testing by dev mode or local runtime` log indicates that the tests ran in dev mode.
+Notice that the `Testing by dev mode or local Liberty` log indicates that the tests ran in dev mode.
 
 // =================================================================================================
 // Running tests in a CI/CD pipeline
