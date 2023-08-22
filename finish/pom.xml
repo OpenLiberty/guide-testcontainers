@@ -151,6 +151,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <http.port>${liberty.var.default.http.port}</http.port>
+                        <https.port>${liberty.var.default.https.port}</https.port>
                         <context.root>${liberty.var.default.context.root}</context.root>
                     </systemPropertyVariables>
                 </configuration>
