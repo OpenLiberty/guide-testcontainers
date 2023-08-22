@@ -76,7 +76,7 @@ public class SystemResourceIT {
     // tag::LibertyContainer[]
     private static LibertyContainer inventoryContainer
     // end::LibertyContainer[]
-        = new LibertyContainer(invImage, httpsPort, httpPort)
+        = new LibertyContainer(invImage, httpPort, httpsPort)
               .withEnv("DB_HOSTNAME", DB_HOST)
               // tag::network3[]
               .withNetwork(network)

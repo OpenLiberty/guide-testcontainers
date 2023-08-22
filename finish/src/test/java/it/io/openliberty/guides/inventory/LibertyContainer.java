@@ -22,7 +22,7 @@ public class LibertyContainer extends GenericContainer<LibertyContainer> {
 
         super(imageName);
         // tag::addExposedPorts1[]
-        addExposedPorts(httpPort);
+        addExposedPorts(httpPort, httpsPort);
         // end::addExposedPorts1[]
 
         // wait for smarter planet message by default

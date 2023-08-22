@@ -228,7 +228,7 @@ include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContaine
 
 The [hotspot file=0]`LibertyContainer` class extends the [hotspot=GenericContainer file=0]`GenericContainer` class from Testcontainers to create a custom container configuration specific to the Open Liberty application.
 
-The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts(port)` method exposes specified ports from the container's perspective, allowing test clients to communicate with services running inside the container. To avoid any port conflicts, Testcontainers assigns random host ports to these exposed container ports. 
+The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts()` method exposes specified ports from the container's perspective, allowing test clients to communicate with services running inside the container. To avoid any port conflicts, Testcontainers assigns random host ports to these exposed container ports. 
 
 By default, the [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty instance has started successfully.
 
