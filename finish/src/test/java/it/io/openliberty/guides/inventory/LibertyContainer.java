@@ -18,7 +18,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 public class LibertyContainer extends GenericContainer<LibertyContainer> {
 // end::GenericContainer[]
 
-    public LibertyContainer(String imageName, int httpsPort, int httpPort) {
+    public LibertyContainer(String imageName, int httpPort, int httpsPort) {
 
         super(imageName);
         // tag::addExposedPorts1[]
