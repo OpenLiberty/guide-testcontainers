@@ -348,7 +348,7 @@ Because you started Open Liberty in dev mode, all the changes were automatically
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-Notice that the `Testing by dev mode or local Liberty` log indicates that the tests ran in dev mode.
+
 
 // =================================================================================================
 // Running tests in a CI/CD pipeline
