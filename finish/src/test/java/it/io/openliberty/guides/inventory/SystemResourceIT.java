@@ -14,12 +14,8 @@ package it.io.openliberty.guides.inventory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.Socket;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -109,13 +105,6 @@ public class SystemResourceIT {
     private static SystemResourceClient createRestClient(String urlPath)
             throws KeyStoreException {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
-        builder.trustStore(KeyStore.getInstance("PKCS12"));
-        builder.hostnameVerifier(
-            new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return hostname.equals("localhost") || hostname.equals("docker");
-                }});
         ResteasyClient client = (ResteasyClient) builder.build();
         ResteasyWebTarget target = client.target(UriBuilder.fromPath(urlPath));
         return target.proxy(SystemResourceClient.class);
@@ -130,7 +119,7 @@ public class SystemResourceIT {
             logger.info("Testing by dev mode or local runtime...");
             if (isServiceRunning("localhost", DB_PORT)) {
                 logger.info("The application is ready to test.");
-                urlPath = "https://localhost:" + httpsPort;
+                urlPath = "http://localhost:" + httpPort;
             } else {
                 throw new Exception("Postgres database is not running");
             }
