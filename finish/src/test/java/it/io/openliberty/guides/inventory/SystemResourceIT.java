@@ -14,7 +14,6 @@ package it.io.openliberty.guides.inventory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.Socket;
-import java.security.KeyStoreException;
 import java.util.List;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -102,8 +101,7 @@ public class SystemResourceIT {
     // end::isServiceRunning[]
 
     // tag::createRestClient[]
-    private static SystemResourceClient createRestClient(String urlPath)
-            throws KeyStoreException {
+    private static SystemResourceClient createRestClient(String urlPath) {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
         ResteasyClient client = (ResteasyClient) builder.build();
         ResteasyWebTarget target = client.target(UriBuilder.fromPath(urlPath));
