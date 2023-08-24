@@ -9,7 +9,7 @@
 :projectid: testcontainers
 :page-layout: guide-multipane
 :page-duration: 20 minutes
-:page-releasedate: 2023-01-31
+:page-releasedate: 2023-09-30
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to test your microservices with multiple containers using Testcontainers and JUnit.
@@ -38,7 +38,7 @@ Sometimes tests might pass in development and testing (dev/test) environments, b
 
 === What is Testcontainers?
 
-Testcontainers is an open source library that wraps Docker in a Java API. It is often used in testing applications that involve external resource dependencies such as databases, message queues, or web services. Testcontainers supports any Docker image, which allows for uniform and portable testing environments. By encapsulating dependencies in containers, it ensures test consistency and simplifies the setup process.
+Testcontainers is an open source library that wraps Docker in a Java API. It is often used in testing applications that involve external resource dependencies such as databases, message queues, or web services. Testcontainers supports any container image, which allows for uniform and portable testing environments. By encapsulating dependencies in containers, it ensures test consistency and simplifies the setup process.
 
 The microservice that you'll be working with is called `inventory`. The `inventory` microservice persists data into a PostgreSQL database and supports create, retrieve, update, and delete (CRUD) operations on the database records. You will write integration tests for the application by using Testcontainers to run it in Docker containers.
 
@@ -82,7 +82,7 @@ cd ../finish
 mvn package
 ```
 
-Build the `inventory` Docker image with the following command:
+Build the `inventory` container image with the following command:
 
 [role='command']
 ```
@@ -143,7 +143,7 @@ The command returns the PostgreSQL container IP address:
 172.17.0.2
 ----
 
-The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting dev mode with container support. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
+The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting dev mode with container support. This goal builds a container image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
 
 Build and run the container by running the `devc` goal with the PostgreSQL container IP address. If your PostgreSQL container IP address is not `172.17.0.2`, replace the command with the right IP address.
 
@@ -177,7 +177,7 @@ Begin by creating a test REST client interface for the `inventory` microservice.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
-#Create the `SystemResourceClient.java` file.#
+#Create the `SystemResourceClient` class.#
 `src/test/java/it/io/openliberty/guides/inventory/SystemResourceClient.java`
 ----
 
@@ -194,7 +194,7 @@ Next, create the `SystemData` data model for testing.
 
 [role="code_command hotspot file=1" ,subs="quotes"]
 ----
-#Create the `SystemData.java` file.#
+#Create the `SystemData` class.#
 `src/test/java/it/io/openliberty/guides/inventory/SystemData.java`
 ----
 
@@ -207,7 +207,7 @@ include::finish/src/test/java/it/io/openliberty/guides/inventory/SystemData.java
 
 The [hotspot file=1]`SystemData` class contains the ID, hostname, operating system name, Java version, and heap size properties. The various [hotspot=getMethods file=1]`get` and [hotspot=setMethods file=1]`set` methods within this class enable you to view and edit the properties of each system in the inventory.
 
-=== Building Testcontainer for Open Liberty
+=== Building test container for Open Liberty
 
 Next, you'll learn to create a custom class that extends Testcontainers' generic container to define specific configurations that suit your application's requirements.
 
@@ -215,7 +215,7 @@ Define a custom `LibertyContainer` class, which provides a framework to start an
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
-#Create the `LibertyContainer.java` file.#
+#Create the `LibertyContainer` class.#
 `src/test/java/it/io/openliberty/guides/inventory/LibertyContainer.java`
 ----
 
@@ -228,40 +228,22 @@ include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContaine
 
 The [hotspot file=0]`LibertyContainer` class extends the [hotspot=GenericContainer file=0]`GenericContainer` class from Testcontainers to create a custom container configuration specific to the Open Liberty application.
 
-The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts(port)` method exposes specified ports from the container's perspective, allowing test clients to communicate with services running inside the container. To avoid any port conflicts, Testcontainers assigns random host ports to these exposed container ports. 
+The [hotspot=addExposedPorts1 hotspot=addExposedPorts2 file=0]`addExposedPorts()` method exposes specified ports from the container's perspective, allowing test clients to communicate with services running inside the container. To avoid any port conflicts, Testcontainers assigns random host ports to these exposed container ports. 
 
-The [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty instance has started successfully.
+By default, the [hotspot=waitingFor file=0]`Wait.forLogMessage()` method directs `LibertyContainer` to wait for the specific `CWWKF0011I` log message that indicates the Liberty instance has started successfully.
+
+The [hotspot=getBaseURL file=0]`getBaseURL()` method contructs the base URL to access the container.
 
 For more information about Testcontainers APIs and its functionality, refer to the https://javadoc.io/doc/org.testcontainers/testcontainers/latest/index.html[Testcontainers JavaDocs^].
 
-Now you can set up trace logging for your tests. 
-
-Having reliable logs is essential for efficient debugging, as they provide detailed insights into the test execution flow and help pinpoint issues during test failures. Testcontainers' built-in `Slf4jLogConsumer` enables integration of container output directly with the JUnit process, enhancing log analysis and simplifying test creation and debugging.
-
-Create the log4j properties to configure the logging behavior in your tests.
-
-[role="code_command hotspot file=1" ,subs="quotes"]
-----
-#Create the `log4j.properties` file.#
-`src/test/resources/log4j.properties`
-----
-
-// file 1
-log4j.properties
-[source, properties, linenums, role='code_column']
-----
-include::finish/src/test/resources/log4j.properties[]
-----
-
-The [hotspot file=1]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=1]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior.
 
 === Building test cases
 
-Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate runtime environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
+Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
-#Create the `SystemResourceIT.java` file.#
+#Create the `SystemResourceIT` class.#
 `src/test/java/it/io/openliberty/guides/inventory/SystemResourceIT.java`
 ----
 
@@ -279,15 +261,22 @@ LibertyContainer.java
 include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContainer.java[]
 ----
 
-Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` Docker image. Because containers are isolated by default, make sure both containers use the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` for them to communicate.
+Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL container image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` container image. Because containers are isolated by default, make sure both containers use the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` for them to communicate.
 
-The [hotspot=waitingFor file=0]`waitingFor()` method overrides the [hotspot=waitingFor file=1]`waitingFor()` method in [hotspot file=1]`LibertyContainer`, ensuring the `inventoryContainer` is ready before tests run by checking the [hotspot=waitingFor file=0]`/health/ready` health readiness check API. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
+// file 2
+ReadinessCheck.java
+[source, java, linenums, role="code_column hide_tags=copyright"]
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/health/ReadinessCheck.java[]
+----
+
+Because the `inventory` service provides the [hotspot file=2]`/health/ready` health readiness check, call the [hotspot=waitingFor file=0]`waitingFor()` method again to override the default [hotspot=waitingFor file=1]`waitingFor()` method in [hotspot file=1]`LibertyContainer`. That ensures the `inventoryContainer` is ready before tests run by checking the [hotspot=waitingFor file=0]`/health/ready` REST API instead of the log message. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
 
 The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
-The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface, and configures a hostname verifier if the tests run over HTTPS. 
+The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface.
 
-The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the tests are running in dev mode or local runtime, or via Testcontainers, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. If it's in dev mode or local runtime, it ensures that the Postgres database is running locally. In the case of no running runtime, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers.
+The [hotspot=setup file=0]`setup()` method prepares the test environment. It checks whether the test is running in dev mode or there is a local running Liberty instance, by using the [hotspot=isServiceRunning file=0]`isServiceRunning()` helper. In the case of no running Liberty instance, the test starts the [hotspot=postgresContainerStart file=0]`postgresContainer` and [hotspot=inventoryContainerStart file=0]`inventoryContainer` test containers. Otherwise, it ensures that the Postgres database is running locally.
 
 The [hotspot=testAddSystem file=0]`testAddSystem()` verifies the [hotspot=addSystem file=0]`addSystem` and [hotspot=listContents file=0]`listContents` endpoints.
 
@@ -297,11 +286,31 @@ The [hotspot=testRemoveSystem file=0]`testRemoveSystem()` verifies the [hotspot=
 
 After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
 
+
+=== Setting up logs
+
+Having reliable logs is essential for efficient debugging, as they provide detailed insights into the test execution flow and help pinpoint issues during test failures. Testcontainers' built-in `Slf4jLogConsumer` enables integration of container output directly with the JUnit process, enhancing log analysis and simplifying test creation and debugging.
+
+[role="code_command hotspot file=0" ,subs="quotes"]
+----
+#Create the `log4j.properties` file.#
+`src/test/resources/log4j.properties`
+----
+
+// file 0
+log4j.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/src/test/resources/log4j.properties[]
+----
+
+The [hotspot file=0]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=0]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior.
+
+
 === Configuring Maven project
 
 Next, you'll learn to prepare your Maven project for test execution. You'll add the required dependencies for Testcontainers and logging, set up Maven to copy the PostgreSQL JDBC driver during the build phase, and configure the Liberty Maven Plugin to handle PostgreSQL dependency.
 
-Configure your test build with Maven. 
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -322,7 +331,7 @@ The Maven pom.xml file contains a configuration for the [hotspot=maven-dependenc
 
 Also, add and configure the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
 
-Save the changes, and press the `enter/return` key in your console window to run the tests. You will see the following output:
+Because you started Open Liberty in dev mode, all the changes were automatically picked up. You can run the tests by pressing the `enter/return` key from the command-line session where you started dev mode. You will see the following output:
 
 [role="no_copy"]
 ----
@@ -330,7 +339,7 @@ Save the changes, and press the `enter/return` key in your console window to run
   T E S T S
  -------------------------------------------------------
  Running it.io.openliberty.guides.inventory.SystemResourceIT
- it.io.openliberty.guides.inventory.SystemResourceIT  - Testing by dev mode or local runtime...
+ it.io.openliberty.guides.inventory.SystemResourceIT  - Testing by dev mode or local Liberty...
  ...
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.873 s - in it.io.openliberty.guides.inventory.SystemResourceIT
 
@@ -339,7 +348,7 @@ Save the changes, and press the `enter/return` key in your console window to run
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-Notice that the `Testing by dev mode or local runtime` log indicates that the tests ran in dev mode.
+
 
 // =================================================================================================
 // Running tests in a CI/CD pipeline
@@ -357,7 +366,7 @@ Also, run the following commands to stop the PostgreSQL container that was start
 docker stop postgres-container
 ```
 
-Because you have already built the `inventory` Docker image in the *Try what you'll build* section, there's no need to build it again here.
+Because you have already built the `inventory` container image in the *Try what you'll build* section, there's no need to build it again here.
 
 Now, use the following Maven goal to run the tests from a cold start outside of dev mode:
 

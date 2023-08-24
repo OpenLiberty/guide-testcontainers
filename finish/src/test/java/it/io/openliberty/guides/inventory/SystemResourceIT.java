@@ -14,12 +14,7 @@ package it.io.openliberty.guides.inventory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.Socket;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -80,7 +75,7 @@ public class SystemResourceIT {
     // tag::LibertyContainer[]
     private static LibertyContainer inventoryContainer
     // end::LibertyContainer[]
-        = new LibertyContainer(invImage, testHttps(), httpsPort, httpPort)
+        = new LibertyContainer(invImage, httpPort, httpsPort)
               .withEnv("DB_HOSTNAME", DB_HOST)
               // tag::network3[]
               .withNetwork(network)
@@ -105,27 +100,9 @@ public class SystemResourceIT {
     }
     // end::isServiceRunning[]
 
-    private static String getProtocol() {
-        return System.getProperty("test.protocol", "https");
-    }
-
-    private static boolean testHttps() {
-        return getProtocol().equalsIgnoreCase("https");
-    }
-
     // tag::createRestClient[]
-    private static SystemResourceClient createRestClient(String urlPath)
-            throws KeyStoreException {
+    private static SystemResourceClient createRestClient(String urlPath) {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
-        if (testHttps()) {
-            builder.trustStore(KeyStore.getInstance("PKCS12"));
-            HostnameVerifier v = new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return hostname.equals("localhost") || hostname.equals("docker");
-                } };
-            builder.hostnameVerifier(v);
-        }
         ResteasyClient client = (ResteasyClient) builder.build();
         ResteasyWebTarget target = client.target(UriBuilder.fromPath(urlPath));
         return target.proxy(SystemResourceClient.class);
@@ -137,14 +114,12 @@ public class SystemResourceIT {
     public static void setup() throws Exception {
         String urlPath;
         if (isServiceRunning("localhost", httpPort)) {
-            logger.info("Testing by dev mode or local runtime...");
+            logger.info("Testing by dev mode or local Liberty...");
             if (isServiceRunning("localhost", DB_PORT)) {
                 logger.info("The application is ready to test.");
-                urlPath = getProtocol() + "://localhost:"
-                          + (testHttps() ? httpsPort : httpPort);
+                urlPath = "http://localhost:" + httpPort;
             } else {
-                throw new Exception(
-                      "Postgres database is not running");
+                throw new Exception("Postgres database is not running");
             }
         } else {
             logger.info("Testing by using Testcontainers...");
@@ -158,7 +133,7 @@ public class SystemResourceIT {
                 // tag::inventoryContainerStart[]
                 inventoryContainer.start();
                 // end::inventoryContainerStart[]
-                urlPath = inventoryContainer.getBaseURL(getProtocol());
+                urlPath = inventoryContainer.getBaseURL();
             }
         }
         urlPath += contextRoot;

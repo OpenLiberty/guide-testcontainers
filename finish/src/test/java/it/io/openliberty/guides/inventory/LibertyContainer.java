@@ -18,19 +18,13 @@ import org.testcontainers.containers.wait.strategy.Wait;
 public class LibertyContainer extends GenericContainer<LibertyContainer> {
 // end::GenericContainer[]
 
-    public LibertyContainer(
-        String imageName, boolean testHttps, int httpsPort, int httpPort) {
+    public LibertyContainer(String imageName, int httpPort, int httpsPort) {
 
         super(imageName);
-        if (testHttps) {
-            // tag::addExposedPorts1[]
-            addExposedPorts(httpsPort, httpPort);
-            // end::addExposedPorts1[]
-        } else {
-            // tag::addExposedPorts2[]
-            addExposedPorts(httpPort);
-            // end::addExposedPorts2[]
-        }
+        // tag::addExposedPorts1[]
+        addExposedPorts(httpPort, httpsPort);
+        // end::addExposedPorts1[]
+
         // wait for smarter planet message by default
         // tag::waitingFor[]
         waitingFor(Wait.forLogMessage("^.*CWWKF0011I.*$", 1));
@@ -39,8 +33,8 @@ public class LibertyContainer extends GenericContainer<LibertyContainer> {
     }
 
     // tag::getBaseURL[]
-    public String getBaseURL(String protocol) throws IllegalStateException {
-        return protocol + "://" + getHost() + ":" + getFirstMappedPort();
+    public String getBaseURL() throws IllegalStateException {
+        return "http://" + getHost() + ":" + getFirstMappedPort();
     }
     // end::getBaseURL[]
 
