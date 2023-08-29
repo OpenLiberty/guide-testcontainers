@@ -91,11 +91,27 @@ docker build -t inventory:1.0-SNAPSHOT .
 
 Now, run the Maven `verify` goal, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
 
+[.tab_link.windows_link]
+`*WINDOWS*`
+[.tab_link.mac_link]
+`*MAC*`
+[.tab_link.linux_link]
+`*LINUX*`
+[.tab_content.windows_section.mac_section]
+--
+[role='command']
+```
+mvn verify
+```
+--
+[.tab_content.linux_section]
+--
 [role='command']
 ```
 export TESTCONTAINERS_RYUK_DISABLED=true
-mvn verify
+mvn verify -Dtest.protocol=http
 ```
+--
 
 You will see the following output:
 
@@ -370,11 +386,27 @@ Because you have already built the `inventory` container image in the *Try what 
 
 Now, use the following Maven goal to run the tests from a cold start outside of dev mode:
 
+[.tab_link.windows_link]
+`*WINDOWS*`
+[.tab_link.mac_link]
+`*MAC*`
+[.tab_link.linux_link]
+`*LINUX*`
+[.tab_content.windows_section.mac_section]
+--
+[role='command']
+```
+mvn verify
+```
+--
+[.tab_content.linux_section]
+--
 [role='command']
 ```
 export TESTCONTAINERS_RYUK_DISABLED=true
-mvn verify
+mvn verify -Dtest.protocol=http
 ```
+--
 
 You will see the following output:
 
