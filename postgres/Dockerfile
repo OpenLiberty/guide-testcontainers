@@ -8,6 +8,6 @@ ENV POSTGRES_USER admin
 ENV POSTGRES_DB admindb
 
 # Use dumpfile to create table schema and populate it with data
-ADD schema.sql /docker-entrypoint-initdb.d/1-schema.sql
+COPY schema.sql /docker-entrypoint-initdb.d/1-schema.sql
 
 EXPOSE 5432
