@@ -13,14 +13,15 @@ package it.io.openliberty.guides.inventory;
 
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.builder.ImageFromDockerfile;
 
 // tag::GenericContainer[]
 public class LibertyContainer extends GenericContainer<LibertyContainer> {
 // end::GenericContainer[]
 
-    public LibertyContainer(String imageName, int httpPort, int httpsPort) {
+    public LibertyContainer(ImageFromDockerfile image, int httpPort, int httpsPort) {
 
-        super(imageName);
+        super(image);
         // tag::addExposedPorts1[]
         addExposedPorts(httpPort, httpsPort);
         // end::addExposedPorts1[]

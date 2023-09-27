@@ -16,6 +16,7 @@
     <variable name="default.context.root" defaultValue="/inventory" />
     <!-- end::contextRoot[] -->
     <!-- tag::variables[] -->
+    <variable name="db.database" defaultValue="admindb" />
     <variable name="db.hostname" defaultValue="localhost" />
     <variable name="db.portnum" defaultValue="5432" />
     <variable name="db.username" defaultValue="admin" />
@@ -45,7 +46,7 @@
     <dataSource id="DefaultDataSource" jndiName="jdbc/postgresql">
         <jdbcDriver libraryRef="postgresql-library" />
         <!-- tag::postgresProperties[] -->
-        <properties.postgresql databaseName="admin"
+        <properties.postgresql databaseName="${db.database}"
                                serverName="${db.hostname}"
                                portNumber="${db.portnum}"
                                user="${db.username}"

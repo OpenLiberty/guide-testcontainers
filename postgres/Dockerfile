@@ -4,6 +4,8 @@ FROM postgres:14.1
 ENV POSTGRES_PASSWORD adminpwd
 # create database called database
 ENV POSTGRES_USER admin
+# Create the default database for PostgreSQL
+ENV POSTGRES_DB admindb
 
 # Use dumpfile to create table schema and populate it with data
 ADD schema.sql /docker-entrypoint-initdb.d/1-schema.sql

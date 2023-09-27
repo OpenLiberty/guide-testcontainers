@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.Socket;
 import java.util.List;
+import java.nio.file.Paths;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -31,6 +32,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.builder.ImageFromDockerfile;
 
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.UriBuilder;
@@ -38,18 +40,22 @@ import jakarta.ws.rs.core.UriBuilder;
 @TestMethodOrder(OrderAnnotation.class)
 public class SystemResourceIT {
 
-    // tag::getLogger[]
+    // tag::getLogger1[]
     private static Logger logger = LoggerFactory.getLogger(SystemResourceIT.class);
-    // end::getLogger[]
+    // end::getLogger1[]
 
     private static final String DB_HOST = "postgres";
     private static final int DB_PORT = 5432;
-    private static final String DB_IMAGE = "postgres-sample:latest";
+    private static ImageFromDockerfile postgresImage
+        = new ImageFromDockerfile("postgres-sample")
+              .withDockerfile(Paths.get("../postgres/Dockerfile"));
 
     private static int httpPort = Integer.parseInt(System.getProperty("http.port"));
     private static int httpsPort = Integer.parseInt(System.getProperty("https.port"));
     private static String contextRoot = System.getProperty("context.root") + "/api";
-    private static String invImage = "inventory:1.0-SNAPSHOT";
+    private static ImageFromDockerfile invImage
+        = new ImageFromDockerfile("inventory:1.0-SNAPSHOT")
+              .withDockerfile(Paths.get("./Dockerfile"));
 
     private static SystemResourceClient client;
     // tag::network1[]
@@ -60,7 +66,7 @@ public class SystemResourceIT {
     // tag::GenericContainer[]
     private static GenericContainer<?> postgresContainer
     // end::GenericContainer[]
-        = new GenericContainer<>(DB_IMAGE)
+        = new GenericContainer<>(postgresImage)
               // tag::network2[]
               .withNetwork(network)
               // end::network2[]
@@ -80,11 +86,12 @@ public class SystemResourceIT {
               // tag::network3[]
               .withNetwork(network)
               // end::network3[]
-              // tag::waitingFor[]
-              .waitingFor(Wait.forHttp("/health/ready").forPort(httpPort))
-              // end::waitingFor[]
               // tag::withLogConsumer2[]
-              .withLogConsumer(new Slf4jLogConsumer(logger));
+              .withLogConsumer(
+                new Slf4jLogConsumer(
+                    // tag::getLogger2[]
+                    LoggerFactory.getLogger(LibertyContainer.class)));
+                    // end::getLogger2[]
               // end::withLogConsumer2[]
     // end::inventoryContainer[]
 

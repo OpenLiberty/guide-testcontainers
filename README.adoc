@@ -38,7 +38,7 @@ Sometimes tests might pass in development and testing (dev/test) environments, b
 
 === What is Testcontainers?
 
-Testcontainers is an open source library that wraps Docker in a Java API. It is often used in testing applications that involve external resource dependencies such as databases, message queues, or web services. Testcontainers supports any container image, which allows for uniform and portable testing environments. By encapsulating dependencies in containers, it ensures test consistency and simplifies the setup process.
+Testcontainers is an open-source library that utilizes the docker-java library, which wraps Docker in a Java API. Building on this, Testcontainers integrates into the lifecycle of test frameworks to provide containers as a resource at test time. This allows for consistent, portable testing environments especially when dealing with applications that have external resource dependencies such as databases, message queues, or web services. By encapsulating dependencies in containers, Testcontainers ensures a uniform testing setup and simplifies the configuration process.
 
 The microservice that you'll be working with is called `inventory`. The `inventory` microservice persists data into a PostgreSQL database and supports create, retrieve, update, and delete (CRUD) operations on the database records. You will write integration tests for the application by using Testcontainers to run it in Docker containers.
 
@@ -64,29 +64,14 @@ include::{common-includes}/gitclone.adoc[]
 // =================================================================================================
 === Try what you'll build
 
-This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Navigate to the `postgres` directory and run the following commands to use the Dockerfile to build the image:
-
-[role='command']
-```
-cd postgres
-docker build -t postgres-sample .
-```
-
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
 To try out the test, first go to the `finish` directory and run the `mvn package` command so that the `.war` file resides in the `target` directory, and the `.jar` PostgreSQL JDBC driver file resides in the `target/liberty/wlp/usr/shared/resources` directory:
 
 [role='command']
 ```
-cd ../finish
+cd finish
 mvn package
-```
-
-Build the `inventory` container image with the following command:
-
-[role='command']
-```
-docker build -t inventory:1.0-SNAPSHOT .
 ```
 
 Now, run the Maven `verify` goal, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
@@ -136,7 +121,12 @@ You will see the following output:
 
 You'll develop integration tests capable of running in both https://openliberty.io/docs/latest/development-mode.html[dev mode^] and a CI/CD pipeline. These flexible tests ensure the application's reliability across diverse environments.
 
-Navigate to the `start` directory to begin.
+This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Navigate to the `postgres` directory and run the following command to use the Dockerfile to build the image:
+
+[role='command']
+```
+docker build -t postgres-sample .
+```
 
 The PostgreSQL database is integral for the `inventory` microservice as it handles the persistence of data. Run the following command to start the PostgreSQL database, which runs the `postgres-sample` image in a Docker container and maps `5432` port from the container to your host machine:
 
@@ -159,7 +149,9 @@ The command returns the PostgreSQL container IP address:
 172.17.0.2
 ----
 
-The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting dev mode with container support. This goal builds a container image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
+Now, navigate to the `start` directory to begin.
+
+The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting dev mode with container support. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
 
 Build and run the container by running the `devc` goal with the PostgreSQL container IP address. If your PostgreSQL container IP address is not `172.17.0.2`, replace the command with the right IP address.
 
@@ -277,18 +269,13 @@ LibertyContainer.java
 include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContainer.java[]
 ----
 
-Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL container image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` container image. Because containers are isolated by default, make sure both containers use the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` for them to communicate.
+Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` Docker image. 
 
-// file 2
-ReadinessCheck.java
-[source, java, linenums, role="code_column hide_tags=copyright"]
-----
-include::finish/src/main/java/io/openliberty/guides/inventory/health/ReadinessCheck.java[]
-----
+Because containers are isolated by default, placing both the [hotspot=LibertyContainer file=0]`LibertyContainer` and the [hotspot=postgresContainer file=0]`postgresContainer` on the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` allows them to communicate using the hostname `localhost` and the internal port `5432`, bypassing the need for an externally mapped port.
 
-Because the `inventory` service provides the [hotspot file=2]`/health/ready` health readiness check, call the [hotspot=waitingFor file=0]`waitingFor()` method again to override the default [hotspot=waitingFor file=1]`waitingFor()` method in [hotspot file=1]`LibertyContainer`. That ensures the `inventoryContainer` is ready before tests run by checking the [hotspot=waitingFor file=0]`/health/ready` REST API instead of the log message. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
+Note that the [hotspot=waitingFor file=0]`waitingFor()` method here overrides the [hotspot=waitingFor file=1]`waitingFor()` method from [hotspot file=1]`LibertyContainer`. Given that the `inventory` service depends on a database service, ensuring readiness involves more than just the microservice itself. To address this, the `inventoryContainer` readiness is determined by checking the [hotspot=waitingFor file=0]`/health/ready` health readiness check API, which reflects both the application and database service states. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
 
-The [hotspot=getLogger file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
+The [hotspot=getLogger1 hotspot=getLogger2 file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
 The [hotspot=createRestClient file=0]`createRestClient()` method creates a REST client instance with the `SystemResourceClient` interface.
 
@@ -382,8 +369,6 @@ Also, run the following commands to stop the PostgreSQL container that was start
 docker stop postgres-container
 ```
 
-Because you have already built the `inventory` container image in the *Try what you'll build* section, there's no need to build it again here.
-
 Now, use the following Maven goal to run the tests from a cold start outside of dev mode:
 
 [.tab_link.windows_link]
@@ -423,7 +408,7 @@ You will see the following output:
  tc.postgres-sample:latest  - Container postgres-sample:latest started in PT2.925405S
  tc.inventory:1.0-SNAPSHOT  - Creating container for image: inventory:1.0-SNAPSHOT
  tc.inventory:1.0-SNAPSHOT  - Container inventory:1.0-SNAPSHOT is starting: 432ac739f377abe957793f358bbb85cc916439283ed2336014cacb585f9992b8
- it.io.openliberty.guides.inventory.SystemResourceIT  - STDOUT: [AUDIT   ] CWWKF0011I: The defaultServer server is ready to run a smarter planet. The defaultServer server started in 7.855 seconds.
+ tc.inventory:1.0-SNAPSHOT  - Container inventory:1.0-SNAPSHOT started in PT25.784899S
 
  Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.208 s - in it.io.openliberty.guides.inventory.SystemResourceIT
 
