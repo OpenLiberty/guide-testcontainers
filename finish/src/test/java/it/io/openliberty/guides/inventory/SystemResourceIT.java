@@ -86,6 +86,9 @@ public class SystemResourceIT {
               // tag::network3[]
               .withNetwork(network)
               // end::network3[]
+              // tag::waitingFor[]
+              .waitingFor(Wait.forHttp("/health/ready").forPort(httpPort))
+              // end::waitingFor[]
               // tag::withLogConsumer2[]
               .withLogConsumer(
                 new Slf4jLogConsumer(
