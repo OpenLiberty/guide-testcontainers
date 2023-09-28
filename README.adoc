@@ -247,7 +247,7 @@ For more information about Testcontainers APIs and its functionality, refer to t
 
 === Building test cases
 
-Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate environment to launch Testcontainers, and configure the test REST client for HTTPS communication.
+Next, you'll learn to write tests that use the `SystemResourceClient` REST client and the Testcontainers integration. You'll set up a multi-container test environment, determine the appropriate environment to launch Testcontainers, and get familiar with the workings of the test REST client.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -269,7 +269,9 @@ LibertyContainer.java
 include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContainer.java[]
 ----
 
-Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the PostgreSQL Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory` Docker image. 
+Construct the [hotspot=postgresImage file=0]`postgresImage` and [hotspot=invImage file=0]`invImage` using the `ImageFromDockerfile` class, which allows Testcontainers to build Docker images from a Dockerfile during the test runtime. For these instances, the provided Dockerfiles at the specified paths `../postgres/Dockerfile` and `./Dockerfile` are used to generate the respective `postgres-sample` and `inventory:1.0-SNAPSHOT` images.
+
+Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the `postgres-sample` Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory:1.0-SNAPSHOT` Docker image. 
 
 Because containers are isolated by default, placing both the [hotspot=LibertyContainer file=0]`LibertyContainer` and the [hotspot=postgresContainer file=0]`postgresContainer` on the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` allows them to communicate using the hostname `localhost` and the internal port `5432`, bypassing the need for an externally mapped port.
 

@@ -46,16 +46,20 @@ public class SystemResourceIT {
 
     private static final String DB_HOST = "postgres";
     private static final int DB_PORT = 5432;
+    // tag::postgresImage[]
     private static ImageFromDockerfile postgresImage
         = new ImageFromDockerfile("postgres-sample")
               .withDockerfile(Paths.get("../postgres/Dockerfile"));
+    // end::postgresImage[]
 
     private static int httpPort = Integer.parseInt(System.getProperty("http.port"));
     private static int httpsPort = Integer.parseInt(System.getProperty("https.port"));
     private static String contextRoot = System.getProperty("context.root") + "/api";
+    // tag::invImage[]
     private static ImageFromDockerfile invImage
         = new ImageFromDockerfile("inventory:1.0-SNAPSHOT")
               .withDockerfile(Paths.get("./Dockerfile"));
+    // end::invImage[]
 
     private static SystemResourceClient client;
     // tag::network1[]
