@@ -362,7 +362,7 @@ Because you started Open Liberty in dev mode, all the changes were automatically
 
 Running tests in dev mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty instance in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
 
-To test outside of dev mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty, or by typing `q` and then pressing the `enter/return` key.
+To test outside of dev mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty.
 
 Also, run the following commands to stop the PostgreSQL container that was started in the previous section:
 
