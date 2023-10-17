@@ -9,7 +9,7 @@
 :projectid: testcontainers
 :page-layout: guide-multipane
 :page-duration: 20 minutes
-:page-releasedate: 2023-09-30
+:page-releasedate: 2023-11-30
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to test your microservices with multiple containers using Testcontainers and JUnit.
@@ -17,7 +17,7 @@
 :page-seo-description: A getting started tutorial on how to develop true-to-production integration tests for Java microservices in production-like settings by using Testcontainers and JUnit with multiple containers and Open Liberty Docker container.
 :guide-author: Open Liberty
 :page-tags: ['MicroProfile', 'Jakarta EE']
-:page-related-guides: ['microshed-testing', 'reactive-service-testing', 'arquillian-managed']
+:page-related-guides: ['reactive-service-testing', 'arquillian-managed']
 :page-permalink: /guides/{projectid}
 :repo-description: Visit the https://openliberty.io/guides/{projectid}.html[website] for the rendered version of the guide.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
@@ -157,7 +157,7 @@ Build and run the container by running the `devc` goal with the PostgreSQL conta
 
 [role='command']
 ```
-mvn liberty:devc -DdockerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
+mvn liberty:devc -DcontainerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
 
 You need to wait a while to let dev mode start. After you see the following message, your Liberty instance is ready in dev mode:
@@ -408,15 +408,17 @@ You will see the following output:
  tc.postgres-sample:latest  - Creating container for image: postgres-sample:latest
  tc.postgres-sample:latest  - Container postgres-sample:latest is starting: 7cf2e2c6a505f41877014d08b7688399b3abb9725550e882f1d33db8fa4cff5a
  tc.postgres-sample:latest  - Container postgres-sample:latest started in PT2.925405S
+ ...
  tc.inventory:1.0-SNAPSHOT  - Creating container for image: inventory:1.0-SNAPSHOT
  tc.inventory:1.0-SNAPSHOT  - Container inventory:1.0-SNAPSHOT is starting: 432ac739f377abe957793f358bbb85cc916439283ed2336014cacb585f9992b8
  tc.inventory:1.0-SNAPSHOT  - Container inventory:1.0-SNAPSHOT started in PT25.784899S
+...
 
- Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.208 s - in it.io.openliberty.guides.inventory.SystemResourceIT
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.208 s - in it.io.openliberty.guides.inventory.SystemResourceIT
 
- Results:
+Results:
 
- Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 Notice that the test initiates a new Docker container each for the PostgreSQL database and the `inventory` microservice, resulting in a longer test runtime. Despite this, cold start testing benefits from a clean instance per run and ensures consistent results. These tests also automatically hook into existing build pipelines that are set up to run the `integration-test` phase.
