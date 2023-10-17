@@ -167,9 +167,9 @@ You need to wait a while to let dev mode start. After you see the following mess
 **************************************************************
 *    Liberty is running in dev mode.
 *    ...
-*    Docker network information:
+*    Container network information:
 *        Container name: [ liberty-dev ]
-*        IP address [ 172.17.0.3 ] on Docker network [ bridge ]
+*        IP address [ 172.17.0.3 ] on container network [ bridge ]
 *    ...
 ----
 
