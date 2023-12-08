@@ -9,7 +9,7 @@
 :projectid: testcontainers
 :page-layout: guide-multipane
 :page-duration: 20 minutes
-:page-releasedate: 2023-11-30
+:page-releasedate: 2023-12-30
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to test your microservices with multiple containers using Testcontainers and JUnit.
@@ -42,7 +42,7 @@ Testcontainers is an open-source library that utilizes the docker-java library, 
 
 The microservice that you'll be working with is called `inventory`. The `inventory` microservice persists data into a PostgreSQL database and supports create, retrieve, update, and delete (CRUD) operations on the database records. You will write integration tests for the application by using Testcontainers to run it in Docker containers.
 
-image::inventory.png[Inventory microservice,align="center"]
+image::inventory.png[Inventory microservice,align="center",height=85%,width=85%]
 
 // =================================================================================================
 // Additional prerequisites
