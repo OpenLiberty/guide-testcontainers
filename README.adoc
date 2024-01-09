@@ -12,7 +12,7 @@
 :page-releasedate: 2023-12-30
 :page-guide-category: microprofile
 :page-essential: false
-:page-description: Learn how to test your microservices with multiple containers using Testcontainers and JUnit.
+:page-description: Learn how to test your microservices with multiple containers by using Testcontainers and JUnit.
 :page-seo-title: Testing Java microservices using Testcontainers and JUnit with multiple containers and Open Liberty Docker container
 :page-seo-description: A getting started tutorial on how to develop true-to-production integration tests for Java microservices in production-like settings by using Testcontainers and JUnit with multiple containers and Open Liberty Docker container.
 :guide-author: Open Liberty
@@ -26,21 +26,21 @@
 = Building true-to-production integration tests with Testcontainers
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, see the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to test your microservices with multiple containers using Testcontainers and JUnit.
+Learn how to test your microservices with multiple containers by using Testcontainers and JUnit.
 
 == What you'll learn
 
 You'll learn how to write true-to-production integration tests for Java microservices by using https://www.testcontainers.org/[Testcontainers^] and JUnit. You'll learn to set up and configure multiple containers, including the Open Liberty Docker container, to simulate a production-like environment for your tests.
 
-Sometimes tests might pass in development and testing (dev/test) environments, but fail in production because the application runs differently in production than in dev/test. Fortunately, you can minimize these differences between dev/test and production by testing your application in the same Docker containers that you'll use in production.
+Sometimes tests might pass in development and testing (dev/test) environments, but fail in production because the application runs differently in production than in testing (dev/test) environments. Fortunately, you can minimize these differences between dev/test and production by testing your application in the same Docker containers that you'll use in production.
 
 === What is Testcontainers?
 
-Testcontainers is an open-source library that utilizes the docker-java library, which wraps Docker in a Java API. Building on this, Testcontainers integrates into the lifecycle of test frameworks to provide containers as a resource at test time. This allows for consistent, portable testing environments especially when dealing with applications that have external resource dependencies such as databases, message queues, or web services. By encapsulating dependencies in containers, Testcontainers ensures a uniform testing setup and simplifies the configuration process.
+Testcontainers is an open-source library that utilizes the docker-java library, which wraps the Docker in a Java API. Building on this, Testcontainers integrates into the lifecycle of test frameworks to provide containers as a resource at test time. This allows for consistent, portable testing environments especially when dealing with applications that have external resource dependencies such as databases, message queues, or web services. By encapsulating these dependencies in containers, Testcontainers ensures a uniform testing setup and simplifies the configuration process.
 
-The microservice that you'll be working with is called `inventory`. The `inventory` microservice persists data into a PostgreSQL database and supports create, retrieve, update, and delete (CRUD) operations on the database records. You will write integration tests for the application by using Testcontainers to run it in Docker containers.
+The microservice that you'll be working with is called `inventory`. The `inventory` microservice persists data into a PostgreSQL database and supports create, retrieve, update, and delete (CRUD) operations on the database records. You'll write integration tests for the application by using Testcontainers to run it in Docker containers.
 
 image::inventory.png[Inventory microservice,align="center",height=85%,width=85%]
 
@@ -49,7 +49,7 @@ image::inventory.png[Inventory microservice,align="center",height=85%,width=85%]
 // =================================================================================================
 == Additional prerequisites
 
-Before you begin, Docker needs to be installed. For installation instructions, refer to the https://docs.docker.com/get-docker/[official Docker documentation^]. You'll test the application in Docker containers.
+Before you begin, Docker needs to be installed. For installation instructions, see the https://docs.docker.com/get-docker/[official Docker documentation^]. You'll test the application in Docker containers.
 
 Make sure to start your Docker daemon before you proceed.
 
@@ -74,7 +74,7 @@ cd finish
 mvn package
 ```
 
-Now, run the Maven `verify` goal, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
+Now, run the `mvn verify` command, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
 
 [.tab_link.windows_link]
 `*WINDOWS*`
@@ -125,7 +125,7 @@ This guide uses Docker to run an instance of the PostgreSQL database for a fast 
 
 [role='command']
 ```
-docker build -t postgres-sample .
+docker build -t postgres-sample.
 ```
 
 The PostgreSQL database is integral for the `inventory` microservice as it handles the persistence of data. Run the following command to start the PostgreSQL database, which runs the `postgres-sample` image in a Docker container and maps `5432` port from the container to your host machine:
@@ -273,9 +273,9 @@ Construct the [hotspot=postgresImage file=0]`postgresImage` and [hotspot=invImag
 
 Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the `postgres-sample` Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory:1.0-SNAPSHOT` Docker image. 
 
-Because containers are isolated by default, placing both the [hotspot=LibertyContainer file=0]`LibertyContainer` and the [hotspot=postgresContainer file=0]`postgresContainer` on the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` allows them to communicate using the hostname `localhost` and the internal port `5432`, bypassing the need for an externally mapped port.
+As containers are isolated by default, placing both the [hotspot=LibertyContainer file=0]`LibertyContainer` and the [hotspot=postgresContainer file=0]`postgresContainer` on the same [hotspot=network1 hotspot=network2 hotspot=network3 file=0]`network` allows them to communicate by using the hostname `localhost` and the internal port `5432`, bypassing the need for an externally mapped port.
 
-Note that the [hotspot=waitingFor file=0]`waitingFor()` method here overrides the [hotspot=waitingFor file=1]`waitingFor()` method from [hotspot file=1]`LibertyContainer`. Given that the `inventory` service depends on a database service, ensuring readiness involves more than just the microservice itself. To address this, the `inventoryContainer` readiness is determined by checking the [hotspot=waitingFor file=0]`/health/ready` health readiness check API, which reflects both the application and database service states. For different container readiness check customizations, refer to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
+The [hotspot=waitingFor file=0]`waitingFor()` method here overrides the [hotspot=waitingFor file=1]`waitingFor()` method from [hotspot file=1]`LibertyContainer`. Given that the `inventory` service depends on a database service, ensuring that readiness involves more than just the microservice itself. To address this, the `inventoryContainer` readiness is determined by checking the [hotspot=waitingFor file=0]`/health/ready` health readiness check API, which reflects both the application and database service states. For different container readiness check customizations, see to the https://www.testcontainers.org/features/startup_and_waits/[official Testcontainers documentation^].
 
 The [hotspot=getLogger1 hotspot=getLogger2 file=0]`LoggerFactory.getLogger()` and [hotspot=withLogConsumer1 hotspot=withLogConsumer2 file=0]`withLogConsumer(new Slf4jLogConsumer(Logger))` methods integrate container logs with the test logs by piping the container output to the specified logger.
 
@@ -312,7 +312,7 @@ include::finish/src/test/resources/log4j.properties[]
 The [hotspot file=0]`log4j.properties` file configures the root logger, appenders, and layouts for console output. It sets the logging level to `DEBUG` for the [hotspot=package file=0]`it.io.openliberty.guides.inventory` package. This level provides detailed logging information for the specified package, which can be helpful for debugging and understanding test behavior.
 
 
-=== Configuring Maven project
+=== Configuring the Maven project
 
 Next, you'll learn to prepare your Maven project for test execution. You'll add the required dependencies for Testcontainers and logging, set up Maven to copy the PostgreSQL JDBC driver during the build phase, and configure the Liberty Maven Plugin to handle PostgreSQL dependency.
 
@@ -332,11 +332,11 @@ include::finish/pom.xml[]
 
 Add the required `dependency` for Testcontainers and Log4J libraries with `test` scope. The [hotspot=testcontainers file=0]`testcontainers` dependency offers a general-purpose API for managing container-based test environments. The [hotspot=slf4j file=0]`slf4j-reload4j` and [hotspot=slf4j-api file=0]`slf4j-api` dependencies enable the Simple Logging Facade for Java (SLF4J) API for trace logging during test execution and facilitates debugging and test performance tracking. 
 
-The Maven pom.xml file contains a configuration for the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` to copy the PostgreSQL JDBC driver into the Liberty configuration's shared resources directory. This setup occurs during the `prepare-package` phase. As a result, running the `mvn package` command ensures the PostgreSQL driver is prepared and accessible for your application when it runs on the Liberty.
+The Maven `pom.xml` file contains a configuration for the [hotspot=maven-dependency-plugin file=0]`maven-dependency-plugin` to copy the PostgreSQL JDBC driver into the Liberty configuration's shared resources directory. This setup occurs during the `prepare-package` phase. As a result, running the `mvn package` command ensures the PostgreSQL driver is prepared and accessible for your application when it runs on the Liberty.
 
-Also, add and configure the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the Maven `verify` goal.
+Also, add and configure the [hotspot=failsafe file=0]`maven-failsafe-plugin` plugin, so that the integration test can be run by the `mvn verify` command.
 
-Because you started Open Liberty in dev mode, all the changes were automatically picked up. You can run the tests by pressing the `enter/return` key from the command-line session where you started dev mode. You will see the following output:
+As you started Open Liberty in dev mode, all the changes were automatically picked up. You can run the tests by pressing the `enter/return` key from the command-line session where you started dev mode. You will see the following output:
 
 [role="no_copy"]
 ----
@@ -362,7 +362,7 @@ Because you started Open Liberty in dev mode, all the changes were automatically
 
 Running tests in dev mode is useful for local development, but there may be times when you want to test your application in other scenarios, such as in a CI/CD pipeline. For these cases, you can use Testcontainers to run tests against a running Open Liberty instance in a controlled, self-contained environment, ensuring that your tests run consistently regardless of the deployment context.
 
-To test outside of dev mode, exit dev mode by pressing `CTRL+C` in the command-line session where you ran the Liberty.
+To test outside of dev mode, exit dev mode by pressing `CTRL+C/command+C` in the command-line session where you ran the Liberty.
 
 Also, run the following commands to stop the PostgreSQL container that was started in the previous section:
 
