@@ -1,4 +1,4 @@
-// Copyright (c) 2023 IBM Corporation and others.
+// Copyright (c) 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -9,14 +9,14 @@
 :projectid: testcontainers
 :page-layout: guide-multipane
 :page-duration: 20 minutes
-:page-releasedate: 2023-12-30
+:page-releasedate: 2024-01-30
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to test your microservices with multiple containers using Testcontainers and JUnit.
 :page-seo-title: Testing Java microservices using Testcontainers and JUnit with multiple containers and Open Liberty Docker container
 :page-seo-description: A getting started tutorial on how to develop true-to-production integration tests for Java microservices in production-like settings by using Testcontainers and JUnit with multiple containers and Open Liberty Docker container.
 :guide-author: Open Liberty
-:page-tags: ['MicroProfile', 'Jakarta EE']
+:page-tags: ['microprofile', 'jakarta-ee']
 :page-related-guides: ['reactive-service-testing', 'arquillian-managed']
 :page-permalink: /guides/{projectid}
 :repo-description: Visit the https://openliberty.io/guides/{projectid}.html[website] for the rendered version of the guide.

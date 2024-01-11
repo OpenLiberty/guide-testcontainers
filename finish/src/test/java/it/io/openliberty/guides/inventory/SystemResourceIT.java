@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2023 IBM Corporation and others.
+ * Copyright (c) 2024 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -151,7 +151,7 @@ public class SystemResourceIT {
             }
         }
         urlPath += contextRoot;
-        System.out.println("TEST: " + urlPath);
+        logger.info("TEST: " + urlPath);
         client = createRestClient(urlPath);
     }
     // end::setup[]
@@ -166,7 +166,7 @@ public class SystemResourceIT {
     // end::tearDown[]
 
     private void showSystemData(SystemData system) {
-        System.out.println("TEST: SystemData > "
+        logger.info("TEST: SystemData > "
             + system.getId() + ", "
             + system.getHostname() + ", "
             + system.getOsName() + ", "
@@ -178,7 +178,7 @@ public class SystemResourceIT {
     @Test
     @Order(1)
     public void testAddSystem() {
-        System.out.println("TEST: Testing add a system");
+        logger.info("TEST: Testing add a system");
         // tag::addSystem[]
         client.addSystem("localhost", "linux", "11", Long.valueOf(2048));
         // end::addSystem[]
@@ -196,7 +196,7 @@ public class SystemResourceIT {
     @Test
     @Order(2)
     public void testUpdateSystem() {
-        System.out.println("TEST: Testing update a system");
+        logger.info("TEST: Testing update a system");
         // tag::updateSystem[]
         client.updateSystem("localhost", "linux", "8", Long.valueOf(1024));
         // end::updateSystem[]
@@ -213,7 +213,7 @@ public class SystemResourceIT {
     @Test
     @Order(3)
     public void testRemoveSystem() {
-        System.out.println("TEST: Testing remove a system");
+        logger.info("TEST: Testing remove a system");
         // tag::removeSystem[]
         client.removeSystem("localhost");
         // end::removeSystem[]
