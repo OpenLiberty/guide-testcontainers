@@ -160,7 +160,7 @@ Build and run the container by running the `devc` goal with the PostgreSQL conta
 mvn liberty:devc -DcontainerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
 
-You need to wait a while to let dev mode start. After you see the following message, your Liberty instance is ready in dev mode:
+Wait a moment for dev mode to start. After you see the following message, your Liberty instance is ready in dev mode:
 
 [role="no_copy"]
 ----
@@ -177,9 +177,9 @@ Dev mode holds your command-line session to listen for file changes. Open anothe
 
 Point your browser to the http://localhost:9080/openapi/ui URL to try out the `inventory` microservice manually. This interface provides a convenient visual way to interact with the APIs and test out their functionalities. 
 
-=== Building test REST client
+=== Building a test REST client
 
-Test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions. Using a REST client for testing ensures reliable interaction with the `inventory` microservice across various deployment environments: local, Docker container, or Testcontainers.
+The test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions. Using a REST client for testing ensures reliable interaction with the `inventory` microservice across various deployment environments: local, Docker container, or Testcontainers.
 
 Begin by creating a test REST client interface for the `inventory` microservice.
 
@@ -215,7 +215,7 @@ include::finish/src/test/java/it/io/openliberty/guides/inventory/SystemData.java
 
 The [hotspot file=1]`SystemData` class contains the ID, hostname, operating system name, Java version, and heap size properties. The various [hotspot=getMethods file=1]`get` and [hotspot=setMethods file=1]`set` methods within this class enable you to view and edit the properties of each system in the inventory.
 
-=== Building test container for Open Liberty
+=== Building a test container for Open Liberty
 
 Next, create a custom class that extends Testcontainers' generic container to define specific configurations that suit your application's requirements.
 
