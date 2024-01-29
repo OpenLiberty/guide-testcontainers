@@ -34,7 +34,7 @@ Learn how to test your microservices with multiple containers by using Testconta
 
 You'll learn how to write true-to-production integration tests for Java microservices by using https://www.testcontainers.org/[Testcontainers^] and JUnit. You'll learn to set up and configure multiple containers, including the Open Liberty Docker container, to simulate a production-like environment for your tests.
 
-Sometimes tests might pass in development and testing environments, but fail in production because of the differences in how the application operates across these environments. Fortunately, these differences can be minimized by testing your application in the same Docker containers you will use in production. This approach helps to make the development, testing, and production environments more similar, enhancing test reliability.
+Sometimes tests might pass in development and testing environments, but fail in production because of the differences in how the application operates across these environments. Fortunately, these differences can be minimized by testing your application with the same Docker containers you will use in production. This approach helps to ensure parity across the development, testing, and production environments, enhancing quality and test reliability.
 
 === What is Testcontainers?
 
