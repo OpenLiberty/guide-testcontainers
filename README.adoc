@@ -94,7 +94,7 @@ mvn verify
 [role='command']
 ```
 export TESTCONTAINERS_RYUK_DISABLED=true
-mvn verify -Dtest.protocol=http
+mvn verify
 ```
 --
 
@@ -390,7 +390,7 @@ mvn verify
 [role='command']
 ```
 export TESTCONTAINERS_RYUK_DISABLED=true
-mvn verify -Dtest.protocol=http
+mvn verify
 ```
 --
 
