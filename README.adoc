@@ -121,7 +121,9 @@ You see the following output:
 
 Use Testcontainers to write integration tests that run in any environment with minimal setup.
 
-This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Navigate to the `postgres` directory and run the following command to use the Dockerfile to build the image:
+Navigate to the `postgres` directory.
+
+This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Run the following command to use the Dockerfile to build the image:
 
 [role='command']
 ```
