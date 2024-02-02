@@ -13,8 +13,8 @@
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to test your microservices with multiple containers by using Testcontainers and JUnit.
-:page-seo-title: Testing Java microservices using Testcontainers and JUnit with multiple containers and Open Liberty Docker container
-:page-seo-description: A getting started tutorial on how to develop true-to-production integration tests for Java microservices in production-like setting by using Testcontainers and JUnit with multiple containers and Open Liberty Docker container.
+:page-seo-title: Testing Java microservices using Testcontainers and JUnit frameworks with Open Liberty and Docker containers
+:page-seo-description: A getting started tutorial on how to develop and execute true-to-production integration tests for Java applications written with Jakarta EE and MicroProfile APIs in production-like environments by using Testcontainers, JUnit, Open Liberty, and Docker containers.
 :guide-author: Open Liberty
 :page-tags: ['microprofile', 'jakarta-ee']
 :page-related-guides: ['reactive-service-testing', 'arquillian-managed']
@@ -119,7 +119,7 @@ You see the following output:
 // =================================================================================================
 == Writing integration tests using Testcontainers
 
-Use Testcontainers to write integration tests using container technology that run in any environment with minimal setup.
+Use Testcontainers to write integration tests that run in any environment with minimal setup using containers.
 
 Navigate to the `postgres` directory.
 
@@ -179,11 +179,11 @@ Dev mode holds your command-line session to listen for file changes. Open anothe
 
 Point your browser to the http://localhost:9080/openapi/ui URL to try out the `inventory` microservice manually. This interface provides a convenient visual way to interact with the APIs and test out their functionalities. 
 
-=== Building a test REST client
+=== Building a REST test client
 
-The test REST client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions. Using a REST client for testing ensures reliable interaction with the `inventory` microservice across various deployment environments: local, Docker container, or Testcontainers.
+The REST test client is responsible for sending HTTP requests to an application and handling the responses. It enables accurate verification of the application's behavior by ensuring that it responds correctly to various scenarios and conditions. Using a REST client for testing ensures reliable interaction with the `inventory` microservice across various deployment environments: local processes, Docker containers, or containers through Testcontainers.
 
-Begin by creating a test REST client interface for the `inventory` microservice.
+Begin by creating a REST test client interface for the `inventory` microservice.
 
 [role="code_command hotspot file=0" ,subs="quotes"]
 ----
@@ -291,7 +291,7 @@ The [hotspot=testUpdateSystem file=0]`testUpdateSystem()` verifies the [hotspot=
 
 The [hotspot=testRemoveSystem file=0]`testRemoveSystem()` verifies the [hotspot=removeSystem file=0]`removeSystem` endpoint.
 
-After tests, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
+After the tests are executed, the [hotspot=tearDown file=0]`tearDown()` method stops the containers and closes the network.
 
 
 === Setting up logs
