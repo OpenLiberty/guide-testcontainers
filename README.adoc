@@ -14,7 +14,7 @@
 :page-essential: false
 :page-description: Learn how to test your microservices with multiple containers by using Testcontainers and JUnit.
 :page-seo-title: Testing Java microservices using Testcontainers and JUnit with multiple containers and Open Liberty Docker container
-:page-seo-description: A getting started tutorial on how to develop true-to-production integration tests for Java microservices in production-like settings by using Testcontainers and JUnit with multiple containers and Open Liberty Docker container.
+:page-seo-description: A getting started tutorial on how to develop true-to-production integration tests for Java microservices in production-like setting by using Testcontainers and JUnit with multiple containers and Open Liberty Docker container.
 :guide-author: Open Liberty
 :page-tags: ['microprofile', 'jakarta-ee']
 :page-related-guides: ['reactive-service-testing', 'arquillian-managed']
@@ -66,7 +66,7 @@ include::{common-includes}/gitclone.adoc[]
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
-To try out the test, first go to the `finish` directory and run the `mvn package` command so that the `.war` file is in the `target` directory, and the `.jar` PostgreSQL JDBC driver file is in the `target/liberty/wlp/usr/shared/resources` directory:
+To try out the test, first go to the `finish` directory and run the `mvn package` command to build and package the application, which places the `.war` file in the `target` directory and the `.jar` PostgreSQL JDBC driver file in the `target/liberty/wlp/usr/shared/resources` directory:
 
 [role='command']
 ```
@@ -119,7 +119,7 @@ You see the following output:
 // =================================================================================================
 == Writing integration tests using Testcontainers
 
-Use Testcontainers to write integration tests that run in any environment with minimal setup.
+Use Testcontainers to write integration tests using container technology that run in any environment with minimal setup.
 
 Navigate to the `postgres` directory.
 
@@ -153,7 +153,7 @@ The command returns the PostgreSQL container IP address:
 
 Now, navigate to the `start` directory to begin.
 
-The Open Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting https://openliberty.io/docs/latest/development-mode.html#_container_support_for_dev_mode[dev mode^] with container support. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
+The Liberty Maven plug-in includes a `devc` goal that simplifies developing your application in a container by starting https://openliberty.io/docs/latest/development-mode.html#_container_support_for_dev_mode[dev mode^] with container support. This goal builds a Docker image, mounts the required directories, binds the required ports, and then runs the application inside of a container. Dev mode also listens for any changes in the application source code or configuration and rebuilds the image and restarts the container as necessary.
 
 Build and run the container by running the `devc` goal with the PostgreSQL container IP address. If your PostgreSQL container IP address is not `172.17.0.2`, replace the command with the right IP address.
 
