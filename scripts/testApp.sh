@@ -16,13 +16,11 @@ docker run --name postgres-container -p 5432:5432 -d postgres-sample
 docker logs postgres-container
 
 cd ../finish
-pwd
-ls
 
-mvn -ntp -Dhttp.keepAlive=false \
+mvn -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
-    -q clean package liberty:create liberty:install-feature liberty:deploy
+    clean package liberty:create liberty:install-feature liberty:deploy
 mvn -ntp liberty:start
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
