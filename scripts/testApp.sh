@@ -26,5 +26,5 @@ docker stop postgres-container
 docker rm postgres-container
 
 # TEST 2:  Running the test by using Testcontainers
-mvn -ntp clean verify
+mvn -ntp clean package verify
 
