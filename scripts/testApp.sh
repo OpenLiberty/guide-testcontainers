@@ -12,10 +12,12 @@ mvn -ntp verify
 cd ../postgres
 
 docker build -t postgres-sample .
-
 docker run --name postgres-container -p 5432:5432 -d postgres-sample
+docker logs postgres-container
 
 cd ../finish
+pwd
+ls
 
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
