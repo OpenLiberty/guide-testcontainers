@@ -17,10 +17,10 @@ docker logs postgres-container
 
 cd ../finish
 
-mvn -Dhttp.keepAlive=false \
+mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
-    clean package liberty:create liberty:install-feature liberty:deploy
+    liberty:create liberty:install-feature liberty:deploy
 mvn -ntp liberty:start
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
