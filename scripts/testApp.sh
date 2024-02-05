@@ -20,7 +20,7 @@ cd ../finish
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
-    -q clean compile liberty:create liberty:install-feature liberty:deploy
+    -q clean compile test-compile liberty:create liberty:install-feature liberty:deploy
 mvn -ntp liberty:start
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
