@@ -19,4 +19,4 @@ sed -i "s;FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi;FROM $D
 sed -i "s;RUN features.sh;#RUN features.sh;g" Dockerfile
 cat Dockerfile
 
-sudo ../scripts/testApp.sh
+../scripts/testApp.sh
