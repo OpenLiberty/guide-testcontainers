@@ -16,7 +16,7 @@
 :page-seo-title: Testing Java microservices using the Testcontainers and JUnit frameworks with Open Liberty and Docker containers
 :page-seo-description: A tutorial and an example on how to develop and execute true-to-production integration tests in production-like environments for Java applications written with Jakarta EE and MicroProfile APIs by using Testcontainers, JUnit, Open Liberty, and Docker containers.
 :guide-author: Open Liberty
-:page-tags: ['microprofile', 'jakarta-ee']
+:page-tags: ['microprofile', 'jakarta-ee', 'docker']
 :page-related-guides: ['reactive-service-testing', 'arquillian-managed']
 :page-permalink: /guides/{projectid}
 :repo-description: Visit the https://openliberty.io/guides/{projectid}.html[website] for the rendered version of the guide.
