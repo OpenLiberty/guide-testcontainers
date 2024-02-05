@@ -14,10 +14,7 @@ cd ../finish
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
-    -q clean package
-mvn -ntp liberty:create 
-mvn -ntp liberty:install-feature
-mvn -ntp liberty:deploy
+    -q clean compile liberty:create liberty:install-feature liberty:deploy
 mvn -ntp liberty:start
 mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
@@ -29,5 +26,5 @@ docker stop postgres-container
 docker rm postgres-container
 
 # TEST 2:  Running the test by using Testcontainers
-mvn -ntp verify
+mvn -ntp clean verify
 
