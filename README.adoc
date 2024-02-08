@@ -83,6 +83,7 @@ mvn package
 
 Now, run the `mvn verify` command, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
 
+ifndef::cloud-hosted[]
 [.tab_link.windows_link]
 `*WINDOWS*`
 [.tab_link.mac_link]
@@ -104,6 +105,14 @@ export TESTCONTAINERS_RYUK_DISABLED=true
 mvn verify
 ```
 --
+endif::[]
+
+ifdef::cloud-hosted[]
+```bash
+export TESTCONTAINERS_RYUK_DISABLED=true
+mvn verify
+```
+endif::[]
 
 You see the following output:
 
