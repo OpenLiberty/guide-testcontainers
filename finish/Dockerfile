@@ -31,7 +31,7 @@ COPY --chown=1001:0 \
     /config/apps
 
 COPY --chown=1001:0 \
-    target/liberty/wlp/usr/shared/resources/*.jar \
+    target/liberty/wlp/usr/shared/resources/postgresql-*.jar \
     /opt/ol/wlp/usr/shared/resources/
 
 USER 1001
