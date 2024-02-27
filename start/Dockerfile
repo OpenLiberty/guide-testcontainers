@@ -1,8 +1,7 @@
 FROM maven:3.9.6 as staging
 
-RUN mkdir /work && \
-    cd /work && \
-    mvn dependency:copy \
+WORKDIR /work
+RUN mvn dependency:copy \
         -Dartifact=org.postgresql:postgresql:42.7.1 \
         -DoutputDirectory=/work
 
