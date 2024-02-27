@@ -73,15 +73,7 @@ endif::[]
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
-To try out the test, first go to the `finish` directory and run the `mvn package` command to build and package the application, which places the `.war` file in the `target` directory and the `.jar` PostgreSQL JDBC driver file in the `target/liberty/wlp/usr/shared/resources` directory:
-
-[role='command']
-```
-cd finish
-mvn package
-```
-
-Now, run the `mvn verify` command, which compiles the Java files, starts the containers, runs the tests, and then stops the containers.
+To try out the test, first go to the `finish` directory and run the following Maven goal to build the application, starts the containers, runs the tests, and then stops the containers:
 
 ifndef::cloud-hosted[]
 [.tab_link.windows_link]
@@ -94,6 +86,7 @@ ifndef::cloud-hosted[]
 --
 [role='command']
 ```
+cd finish
 mvn verify
 ```
 --
@@ -102,6 +95,7 @@ mvn verify
 [role='command']
 ```
 export TESTCONTAINERS_RYUK_DISABLED=true
+cd finish
 mvn verify
 ```
 --
@@ -433,7 +427,7 @@ Now, use the following Maven goal to run the tests from a cold start outside of 
 --
 [role='command']
 ```
-mvn verify
+mvn clean verify
 ```
 --
 [.tab_content.linux_section]
@@ -441,7 +435,7 @@ mvn verify
 [role='command']
 ```
 export TESTCONTAINERS_RYUK_DISABLED=true
-mvn verify
+mvn clean verify
 ```
 --
 
