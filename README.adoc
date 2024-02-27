@@ -73,7 +73,7 @@ endif::[]
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
-To try out the test, first go to the `finish` directory and run the following Maven goal to build the application, starts the containers, runs the tests, and then stops the containers:
+To try out the test, first go to the `finish` directory and run the following Maven goal that builds the application, starts the containers, runs the tests, and then stops the containers:
 
 ifndef::cloud-hosted[]
 [.tab_link.windows_link]
