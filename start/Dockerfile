@@ -1,4 +1,4 @@
-FROM maven:latest as staging
+FROM maven:3.9.6 as staging
 
 RUN mkdir /work && \
     cd /work && \
