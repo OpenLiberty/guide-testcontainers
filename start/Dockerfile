@@ -1,3 +1,11 @@
+FROM maven as staging
+
+RUN mkdir /work && \
+    cd /work && \
+    mvn dependency:copy \
+        -Dartifact=org.postgresql:postgresql:42.7.1 \
+        -DoutputDirectory=/work
+
 # tag::from[]
 FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
 # end::from[]
@@ -30,8 +38,8 @@ COPY --chown=1001:0 \
     target/inventory.war \
     /config/apps
 
-COPY --chown=1001:0 \
-    target/liberty/wlp/usr/shared/resources/*.jar \
+COPY --chown=1001:0  --from=staging \
+    /work/postgresql-*.jar \
     /opt/ol/wlp/usr/shared/resources/
 
 USER 1001
