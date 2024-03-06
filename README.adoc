@@ -139,7 +139,14 @@ cd /home/project/guide-testcontainers/postgres
 ```
 endif::[]
 
-This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A Dockerfile file is provided for you. Run the following command to use the Dockerfile to build the image:
+// file 0
+postgres/Dockerfile
+[source, Dockerfile, linenums, role="code_column"]
+----
+include::postgres/Dockerfile[]
+----
+
+This guide uses Docker to run an instance of the PostgreSQL database for a fast installation and setup. A [hotspot file=0]`Dockerfile` file is provided for you. Run the following command to use the Dockerfile to build the image:
 
 [role='command']
 ```
@@ -316,7 +323,21 @@ LibertyContainer.java
 include::finish/src/test/java/it/io/openliberty/guides/inventory/LibertyContainer.java[]
 ----
 
-Construct the [hotspot=postgresImage file=0]`postgresImage` and [hotspot=invImage file=0]`invImage` using the `ImageFromDockerfile` class, which allows Testcontainers to build Docker images from a Dockerfile during the test runtime. For these instances, the provided Dockerfiles at the specified paths `../postgres/Dockerfile` and `./Dockerfile` are used to generate the respective `postgres-sample` and `inventory:1.0-SNAPSHOT` images.
+// file 2
+postgres/Dockerfile
+[source, Dockerfile, linenums, role="code_column"]
+----
+include::postgres/Dockerfile[]
+----
+
+// file 3
+Dockerfile
+[source, Dockerfile, linenums, role="code_column"]
+----
+include::finish/Dockerfile[]
+----
+
+Construct the [hotspot=postgresImage file=0]`postgresImage` and [hotspot=invImage file=0]`invImage` using the `ImageFromDockerfile` class, which allows Testcontainers to build Docker images from a Dockerfile during the test runtime. For these instances, the provided Dockerfiles at the specified paths [hotspot file=2]`../postgres/Dockerfile` and [hotspot file=3]`./Dockerfile` are used to generate the respective `postgres-sample` and `inventory:1.0-SNAPSHOT` images.
 
 Use [hotspot=GenericContainer file=0]`GenericContainer` class to create the [hotspot=postgresContainer file=0]`postgresContainer` test container to start up the `postgres-sample` Docker image, and use the [hotspot=LibertyContainer file=0]`LibertyContainer` custom class to create the [hotspot=inventoryContainer file=0]`inventoryContainer` test container to start up the `inventory:1.0-SNAPSHOT` Docker image. 
 
