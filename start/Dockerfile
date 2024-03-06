@@ -2,7 +2,7 @@ FROM maven:3.9.6 as staging
 
 WORKDIR /work
 RUN mvn dependency:copy \
-        -Dartifact=org.postgresql:postgresql:42.7.1 \
+        -Dartifact=org.postgresql:postgresql:42.7.2 \
         -DoutputDirectory=/work
 
 # tag::from[]
