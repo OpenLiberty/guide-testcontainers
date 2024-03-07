@@ -209,7 +209,7 @@ Wait a moment for dev mode to start. After you see the following message, your L
 *    ...
 *    Container network information:
 *        Container name: [ liberty-dev ]
-*        IP address [ 172.17.0.3 ] on container network [ bridge ]
+*        IP address [ 172.17.0.2 ] on container network [ bridge ]
 *    ...
 ----
 
