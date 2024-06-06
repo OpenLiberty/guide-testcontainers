@@ -201,7 +201,7 @@ Build and run the container by running the `devc` goal with the PostgreSQL conta
 mvn liberty:devc -DcontainerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
 
-Wait a moment for dev mode to start. Some error messages are expected and result from docker build printing messages to the standard err stream.  After you see the following message, your Liberty instance is ready in dev mode:
+Wait a moment for dev mode to start. Some error messages are expected and result from building docker image to print out messages on the standard error stream. After you see the following message, your Liberty instance is ready in dev mode:
 
 [role="no_copy"]
 ----
