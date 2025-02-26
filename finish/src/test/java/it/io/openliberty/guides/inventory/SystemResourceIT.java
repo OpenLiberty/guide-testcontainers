@@ -46,6 +46,7 @@ public class SystemResourceIT {
 
     private static final String DB_HOST = "postgres";
     private static final int DB_PORT = 5432;
+    private static final String POSTGRES_PASSWORD = "adminpwd";
     // tag::postgresImage[]
     private static ImageFromDockerfile postgresImage
         = new ImageFromDockerfile("postgres-sample")
@@ -71,6 +72,7 @@ public class SystemResourceIT {
     private static GenericContainer<?> postgresContainer
     // end::GenericContainer[]
         = new GenericContainer<>(postgresImage)
+              .withEnv("POSTGRES_PASSWORD", POSTGRES_PASSWORD)
               // tag::network2[]
               .withNetwork(network)
               // end::network2[]
