@@ -82,10 +82,19 @@ ifndef::cloud-hosted[]
 `*MAC*`
 [.tab_link.linux_link]
 `*LINUX*`
-[.tab_content.windows_section.mac_section]
+[.tab_content.windows_section]
 --
 [role='command']
 ```
+cd finish
+mvn verify
+```
+--
+[.tab_content.mac_section]
+--
+[role='command']
+```
+export TESTCONTAINERS_RYUK_DISABLED=true
 cd finish
 mvn verify
 ```
@@ -445,10 +454,18 @@ Now, use the following Maven goal to run the tests from a cold start outside of 
 `*MAC*`
 [.tab_link.linux_link]
 `*LINUX*`
-[.tab_content.windows_section.mac_section]
+[.tab_content.windows_section]
 --
 [role='command']
 ```
+mvn clean verify
+```
+--
+[.tab_content.mac_section]
+--
+[role='command']
+```
+export TESTCONTAINERS_RYUK_DISABLED=true
 mvn clean verify
 ```
 --
