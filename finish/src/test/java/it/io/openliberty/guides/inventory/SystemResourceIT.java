@@ -45,8 +45,8 @@ public class SystemResourceIT {
     // end::getLogger1[]
 
     private static final String DB_HOST = "postgres";
-    private static final String POSTGRES_PASSWORD = "adminpwd";
     private static final int DB_PORT = 5432;
+    private static final String POSTGRES_PASSWORD = "adminpwd";
     // tag::postgresImage[]
     private static ImageFromDockerfile postgresImage
         = new ImageFromDockerfile("postgres-sample")
