@@ -95,7 +95,7 @@
                         </dependencyGroup>
                     </copyDependencies>
                 </configuration>
-                <version>3.11.2</version>
+                <version>3.11.3</version>
             </plugin>
         </plugins>
     </build>
