@@ -201,7 +201,6 @@ endif::[]
 
 Build and run the container by running the `devc` goal with the PostgreSQL container IP address. If your PostgreSQL container IP address is not `172.17.0.2`, replace the command with the right IP address.
 
-ifndef::cloud-hosted[]
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section]
@@ -212,20 +211,21 @@ mvnw.cmd liberty:devc -DcontainerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverSta
 ```
 --
 
-[.tab_content.mac_section.linux_section]
+[.tab_content.mac_section]
 --
 [role='command']
 ```
 ./mvnw liberty:devc -DcontainerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
 --
-endif::[]
 
-ifdef::cloud-hosted[]
+[.tab_content.linux_section]
+--
+[role='command']
 ```
 ./mvnw liberty:devc -DcontainerRunOpts="-e DB_HOSTNAME=172.17.0.2" -DserverStartTimeout=240
 ```
-endif::[]
+--
 
 Wait a moment for dev mode to start. Some error messages are expected as a result of building the docker image. Although these messages are included on the standard error stream, in this case they are not errors, just logs of the docker build progress. After you see the following message, your Liberty instance is ready in dev mode:
 
@@ -465,7 +465,6 @@ docker stop postgres-container
 
 Now, use the following Maven goal to run the tests from a cold start outside of dev mode:
 
-ifndef::cloud-hosted[]
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section]
@@ -491,14 +490,6 @@ export TESTCONTAINERS_RYUK_DISABLED=true
 ./mvnw clean verify
 ```
 --
-endif::[]
-
-ifdef::cloud-hosted[]
-```
-export TESTCONTAINERS_RYUK_DISABLED=true
-./mvnw clean verify
-```
-endif::[]
 
 You see the following output:
 
