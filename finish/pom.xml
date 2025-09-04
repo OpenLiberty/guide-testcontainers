@@ -120,7 +120,7 @@
                         </dependencyGroup>
                     </copyDependencies>
                 </configuration>
-                <version>3.11.4</version>
+                <version>3.11.5</version>
             </plugin>
             <!-- tag::failsafe[] -->
             <plugin>
