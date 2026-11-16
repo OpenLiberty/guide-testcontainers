@@ -3,7 +3,7 @@ set -euxo pipefail
 ./mvnw -version
 
 # TEST 1:  Running the test by using Testcontainers
-docker pull -q icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
+docker pull -q icr.io/appcafe/open-liberty:kernel-slim-java25-openj9-ubi-minimal
 export TESTCONTAINERS_RYUK_DISABLED=true
 ./mvnw -ntp clean verify
 

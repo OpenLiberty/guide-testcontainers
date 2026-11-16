@@ -34,7 +34,7 @@ public class Inventory {
             em.createNamedQuery("SystemData.findSystem", SystemData.class)
               .setParameter("hostname", hostname)
               .getResultList();
-        return systems == null || systems.isEmpty() ? null : systems.get(0);
+        return systems == null || systems.isEmpty() ? null : systems.getFirst();
     }
 
     public void add(String hostname, String osName, String javaVersion, Long heapSize) {

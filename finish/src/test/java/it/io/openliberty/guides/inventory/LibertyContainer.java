@@ -11,6 +11,8 @@
 // end::copyright[]
 package it.io.openliberty.guides.inventory;
 
+import java.time.Duration;
+
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
@@ -28,7 +30,8 @@ public class LibertyContainer extends GenericContainer<LibertyContainer> {
 
         // wait for smarter planet message by default
         // tag::waitingFor[]
-        waitingFor(Wait.forLogMessage("^.*CWWKF0011I.*$", 1));
+        waitingFor(Wait.forLogMessage("^.*CWWKF0011I.*$", 1)
+            .withStartupTimeout(Duration.ofSeconds(180)));
         // end::waitingFor[]
 
     }

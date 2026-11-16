@@ -11,6 +11,7 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
@@ -28,6 +29,7 @@ import jakarta.persistence.Table;
 @NamedQuery(name = "SystemData.findSystem",
     query = "SELECT e FROM SystemData e WHERE e.hostname = :hostname")
 public class SystemData implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @SequenceGenerator(name = "SEQ",
