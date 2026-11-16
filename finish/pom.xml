@@ -11,8 +11,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <liberty.var.http.port>9080</liberty.var.http.port>
         <liberty.var.https.port>9443</liberty.var.https.port>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>10.0.0</version>
+            <version>11.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.1</version>
             </plugin>
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
@@ -120,7 +120,7 @@
                         </dependencyGroup>
                     </copyDependencies>
                 </configuration>
-                <version>3.11.5</version>
+                <version>3.12.5</version>
             </plugin>
             <!-- tag::failsafe[] -->
             <plugin>

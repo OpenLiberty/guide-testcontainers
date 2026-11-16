@@ -14,6 +14,7 @@ package it.io.openliberty.guides.inventory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.Socket;
+import java.time.Duration;
 import java.util.List;
 import java.nio.file.Paths;
 
@@ -93,7 +94,8 @@ public class SystemResourceIT {
               .withNetwork(network)
               // end::network3[]
               // tag::waitingFor[]
-              .waitingFor(Wait.forHttp("/health/ready").forPort(httpPort))
+              .waitingFor(Wait.forHttp("/health/ready").forPort(httpPort)
+                  .withStartupTimeout(Duration.ofSeconds(180)))
               // end::waitingFor[]
               // tag::withLogConsumer2[]
               .withLogConsumer(
@@ -188,9 +190,9 @@ public class SystemResourceIT {
         List<SystemData> systems = client.listContents();
         // end::listContents[]
         assertEquals(1, systems.size());
-        showSystemData(systems.get(0));
-        assertEquals("11", systems.get(0).getJavaVersion());
-        assertEquals(Long.valueOf(2048), systems.get(0).getHeapSize());
+        showSystemData(systems.getFirst());
+        assertEquals("11", systems.getFirst().getJavaVersion());
+        assertEquals(Long.valueOf(2048), systems.getFirst().getHeapSize());
     }
     // end::testAddSystem[]
 

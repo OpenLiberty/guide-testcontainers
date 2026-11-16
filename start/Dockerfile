@@ -6,7 +6,7 @@ RUN mvn dependency:copy \
         -DoutputDirectory=/work
 
 # tag::from[]
-FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
+FROM icr.io/appcafe/open-liberty:kernel-slim-java25-openj9-ubi-minimal
 # end::from[]
 
 ARG VERSION=1.0
